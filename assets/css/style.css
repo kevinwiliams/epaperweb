@@ -399,7 +399,7 @@ h6 {
 }
 
 #hero .btn-get-started:hover {
-  background: #008bd1;
+  background: #000;
 }
 
 #hero .hero-img {
@@ -1253,13 +1253,13 @@ section {
 .faq .faq-list .question {
   display: block;
   position: relative;
-  font-family: #E62B34;
+/*  font-family: #E62B34;*/
   font-size: 18px;
   line-height: 24px;
   font-weight: 400;
   padding-left: 25px;
   cursor: pointer;
-  color: #007ab7;
+  color: #E62B34;
   transition: 0.3s;
 }
 
@@ -1641,7 +1641,7 @@ section {
 }
 
 #footer .footer-top .footer-newsletter form input[type=submit]:hover {
-  background: #007ab7;
+  background: #000;
 }
 
 #footer .copyright {
