@@ -1,7 +1,25 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿@{ ViewData["Title"] = "About"; }
+<main id="main">
 
-<p>Use this area to provide additional information.</p>
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+        <div class="container">
+
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li>@ViewData["Title"]</li>
+            </ol>
+            <h2>@ViewData["Title"]</h2>
+
+        </div>
+    </section><!-- End Breadcrumbs -->
+
+    <section class="inner-page">
+        <div class="container">
+            <p>
+                @ViewData["Message"]
+            </p>
+        </div>
+    </section>
+
+</main><!-- End #main -->

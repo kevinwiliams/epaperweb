@@ -20,11 +20,13 @@
 
             <nav id="navbar" class="navbar order-last order-lg-0">
                 <ul>
-                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                    <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
+                    <li><a class="nav-link scrollto " href="#portfolio">Features</a></li>
                     <li><a class="nav-link scrollto" href="#pricing">Pricing</a></li>
+                    <li><a class="nav-link scrollto" href="#faq">FAQ</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
                     <li class="dropdown">
                         <a href="#"><span>My Account</span> <i class="bi bi-chevron-down"></i></a>
@@ -34,7 +36,7 @@
                             <li><a class="nav-link scrollto" href="#team">Update Profile</a></li>
                             <li><a class="nav-link scrollto" href="#testimonials">Request Refund</a></li>
                             <li><a class="nav-link scrollto" href="#testimonials">Logout</a></li>
-                           
+
                         </ul>
                     </li>
                 </ul>
