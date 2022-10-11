@@ -263,6 +263,10 @@
     <Content Include="assets\img\hero-newspaper-only.png" />
     <Content Include="assets\img\hero-newspaper.png" />
     <Content Include="assets\img\jol-logo-sm.png" />
+    <Content Include="assets\img\appstore-apple.png" />
+    <Content Include="assets\img\appstore-google.png" />
+    <Content Include="assets\img\master.png" />
+    <Content Include="assets\img\visa.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
