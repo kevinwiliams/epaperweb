@@ -4,8 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Jamaica Observer</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     @Styles.Render("~/bundles/css")
-    @*@Scripts.Render("~/bundles/modernizr")*@
+
+
 </head>
 <body>
     <!-- ======= Header ======= -->
@@ -15,19 +25,19 @@
             <div class="logo me-auto">
                 @*<h1><a href="index.html">Scaffold</a></h1>*@
                 <!-- Uncomment below if you prefer to use an image logo -->
-                 <a href="/"><img src="/assets/img/epaper-logo.png" alt="" class="img-fluid"></a>
+                 <a href="/"><img src="@Url.Content("~/assets/img/epaper-logo.png")" alt="" class="img-fluid"></a>
             </div>
 
             <nav id="navbar" class="navbar order-last order-lg-0">
                 <ul>
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                    <li><a class="nav-link scrollto " href="#portfolio">Features</a></li>
+                    <li><a class="nav-link scrollto " href="#features">Features</a></li>
                     <li><a class="nav-link scrollto" href="#pricing">Pricing</a></li>
+                    <li><a class="nav-link scrollto" href="#cta">Download</a></li>
                     <li><a class="nav-link scrollto" href="#faq">FAQ</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+
                     <li class="dropdown">
                         <a href="#"><span>My Account</span> <i class="bi bi-chevron-down"></i></a>
                         <ul>
@@ -65,7 +75,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-info">
-                            <a href="/"><img src="/assets/img/jol-logo-sm.png" alt="" width="235" class="img-fluid"></a>
+                            <a href="/"><img src="@Url.Content("~/assets/img/jol-logo-sm.png")" alt="" width="235" class="img-fluid"></a>
 
                             <p>
                                 40-42 1/2 Beechwood Avenue <br>
@@ -119,7 +129,7 @@
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     @Scripts.Render("~/bundles/js")
-    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>

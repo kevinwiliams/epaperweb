@@ -19,12 +19,12 @@ namespace ePaperWeb
             //bundles.Add(new Bundle("~/bundles/modernizr").Include(
             //            "~/Scripts/modernizr-*"));
 
-            //bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-            //          "~/Scripts/bootstrap.js"));
+            bundles.Add(new Bundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/bootstrap.js"));
 
             bundles.Add(new Bundle("~/bundles/js").Include(
                       "~/assets/vendor/aos/aos.js",
-                      "~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js",
+                      //"~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js",
                       "~/assets/vendor/glightbox/js/glightbox.min.js",
                       "~/assets/vendor/isotope-layout/isotope.pkgd.min.js",
                       "~/assets/vendor/swiper/swiper-bundle.min.js",
@@ -32,12 +32,13 @@ namespace ePaperWeb
 
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                     "~/assets/vendor/aos/aos.css",
-                     "~/assets/vendor/bootstrap/css/bootstrap.min.css",
-                     "~/assets/vendor/bootstrap-icons/bootstrap-icons.css",
-                     "~/assets/vendor/boxicons/css/boxicons.min.css",
-                     "~/assets/vendor/glightbox/css/glightbox.min.css",
-                     "~/assets/vendor/swiper/swiper-bundle.min.css",
+                     //"~/assets/vendor/aos/aos.css",
+                     //"~/assets/vendor/bootstrap/css/bootstrap.min.css",
+                     //"~/assets/vendor/bootstrap-icons/bootstrap-icons.css",
+                     //"~/assets/vendor/boxicons/css/boxicons.min.css",
+                     //"~/assets/vendor/glightbox/css/glightbox.min.css",
+                     //"~/assets/vendor/swiper/swiper-bundle.min.css",
+                     "~/Content/bootsrap.css",
                      "~/assets/css/style.css"));
         }
     }

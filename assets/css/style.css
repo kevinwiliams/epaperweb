@@ -625,6 +625,22 @@ section {
   margin-bottom: 0;
 }
 
+.services .icon-box-black .icon i {
+    color: #000;
+}
+
+.services .icon-box-black:hover {
+    border-color: #000;
+}
+
+.services .icon-box-red .icon i {
+    color: #f00;
+}
+
+.services .icon-box-red:hover {
+    border-color: #f00;
+}
+
 .services .icon-box-pink .icon i {
   color: #ff689b;
 }
