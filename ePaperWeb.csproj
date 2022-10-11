@@ -277,6 +277,9 @@
     <Content Include="assets\img\appstore-google.png" />
     <Content Include="assets\img\master.png" />
     <Content Include="assets\img\visa.png" />
+    <Content Include="assets\img\epaper-jol-logo.png" />
+    <Content Include="assets\img\fac.jpg" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
