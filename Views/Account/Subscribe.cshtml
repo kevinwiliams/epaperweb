@@ -1,0 +1,25 @@
+﻿@{ ViewData["Title"] = "Subscribe"; }
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+        <div class="container">
+
+            <ol>
+                <li><a href="@Url.Action("index", "home")">Home</a></li>
+                <li>@ViewData["Title"]</li>
+            </ol>
+            <h2>@ViewData["Title"]</h2>
+
+        </div>
+    </section><!-- End Breadcrumbs -->
+
+    <section class="inner-page">
+        <div class="container">
+            <p>
+                @ViewData["Message"]
+            </p>
+        </div>
+    </section>
+
+</main><!-- End #main -->
