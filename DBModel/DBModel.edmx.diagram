@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="67803daa774f4267a49854260a0f7046" Name="Diagram1">
+        <EntityTypeShape EntityType="DBModel.printandsubrate" Width="1.5" PointX="11.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.subscriber_address" Width="1.5" PointX="2.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.subscriber_epaper" Width="1.5" PointX="4.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.subscriber_print" Width="1.5" PointX="6.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.subscriber_tranx" Width="1.5" PointX="9.125" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="DBModel.FK_subscriber_tranx_printandsubrates" />
+        <AssociationConnector Association="DBModel.FK_subscriber_address_subscriber" />
+        <AssociationConnector Association="DBModel.FK_subscriber_epaper_subscriber" />
+        <AssociationConnector Association="DBModel.FK_subscriber_print_subscriber" />
+        <AssociationConnector Association="DBModel.FK_subscriber_tranx_subscriber" />
+        <AssociationConnector Association="DBModel.FK_subscriber_print_address" />
+        <AssociationConnector Association="DBModel.FK_subscriber_tranx_printandsubrates" />
+        <AssociationConnector Association="DBModel.FK_subscriber_address_subscriber" />
+        <AssociationConnector Association="DBModel.FK_subscriber_epaper_subscriber" />
+        <AssociationConnector Association="DBModel.FK_subscriber_print_subscriber" />
+        <AssociationConnector Association="DBModel.FK_subscriber_tranx_subscriber" />
+        <AssociationConnector Association="DBModel.FK_subscriber_print_address" />
+        <EntityTypeShape EntityType="DBModel.subscriber" Width="1.5" PointX="0.625" PointY="0.5" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

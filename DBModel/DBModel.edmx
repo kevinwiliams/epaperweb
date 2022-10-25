@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="printandsubrates">
+          <Key>
+            <PropertyRef Name="rateid" />
+          </Key>
+          <Property Name="rateid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Market" Type="varchar" MaxLength="25" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+          <Property Name="RateDescr" Type="varchar" MaxLength="60" />
+          <Property Name="PrintDayPattern" Type="varchar" MaxLength="7" />
+          <Property Name="PrintTerm" Type="int" />
+          <Property Name="PrintTermUnit" Type="varchar" MaxLength="10" />
+          <Property Name="EDayPattern" Type="varchar" MaxLength="50" />
+          <Property Name="ETerm" Type="int" />
+          <Property Name="ETermUnit" Type="varchar" MaxLength="50" />
+          <Property Name="Curr" Type="varchar" MaxLength="10" />
+          <Property Name="Rate" Type="float" />
+          <Property Name="SortOrder" Type="int" />
+          <Property Name="Active" Type="int" />
+        </EntityType>
+        <EntityType Name="subscriber">
+          <Key>
+            <PropertyRef Name="subscriberID" />
+          </Key>
+          <Property Name="subscriberID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="firstName" Type="varchar" MaxLength="50" />
+          <Property Name="lastName" Type="varchar" MaxLength="50" />
+          <Property Name="dateOfBirth" Type="datetime" />
+          <Property Name="passwordHash" Type="varchar" MaxLength="300" />
+          <Property Name="secretquestion" Type="varchar" MaxLength="100" />
+          <Property Name="secretans" Type="varchar" MaxLength="50" />
+          <Property Name="ipAddress" Type="varchar" MaxLength="50" />
+          <Property Name="isActive" Type="int" />
+          <Property Name="addressID" Type="int" />
+          <Property Name="phoneNumber" Type="varchar" MaxLength="50" />
+          <Property Name="newsletter" Type="int" />
+          <Property Name="createdAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="subscriber_address">
+          <Key>
+            <PropertyRef Name="addressID" />
+          </Key>
+          <Property Name="addressID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subscriberID" Type="int" />
+          <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="addressLine1" Type="varchar" MaxLength="50" />
+          <Property Name="addressLine2" Type="varchar" MaxLength="50" />
+          <Property Name="cityTown" Type="varchar" MaxLength="50" />
+          <Property Name="stateParish" Type="varchar" MaxLength="50" />
+          <Property Name="zipCode" Type="varchar" MaxLength="50" />
+          <Property Name="country" Type="varchar" MaxLength="50" />
+          <Property Name="createdAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="subscriber_epaper">
+          <Key>
+            <PropertyRef Name="epaperID" />
+          </Key>
+          <Property Name="epaperID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subscriberID" Type="int" />
+          <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="token" Type="varchar" MaxLength="50" />
+          <Property Name="startDate" Type="datetime" />
+          <Property Name="endDate" Type="datetime" />
+          <Property Name="isActive" Type="int" />
+          <Property Name="subType" Type="varchar" MaxLength="50" />
+          <Property Name="createdAt" Type="datetime" />
+          <Property Name="notificationEmail" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="subscriber_print">
+          <Key>
+            <PropertyRef Name="printID" />
+          </Key>
+          <Property Name="printID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subscriberID" Type="int" />
+          <Property Name="emailAddress" Type="varchar" MaxLength="50" />
+          <Property Name="rateID" Type="int" />
+          <Property Name="addressID" Type="int" />
+          <Property Name="startDate" Type="datetime" />
+          <Property Name="endDate" Type="datetime" />
+          <Property Name="deliveryInstructions" Type="varchar" MaxLength="200" />
+          <Property Name="circprosubid" Type="varchar" MaxLength="50" />
+          <Property Name="createdAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="subscriber_tranx">
+          <Key>
+            <PropertyRef Name="tranxID" />
+          </Key>
+          <Property Name="tranxID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subscriberID" Type="int" />
+          <Property Name="emailAddress" Type="varchar" MaxLength="50" />
+          <Property Name="cardOwner" Type="varchar" MaxLength="50" />
+          <Property Name="cardType" Type="varchar" MaxLength="50" />
+          <Property Name="tranxDate" Type="datetime" />
+          <Property Name="rateID" Type="int" />
+          <Property Name="tranxType" Type="varchar" MaxLength="50" />
+          <Property Name="orderID" Type="varchar" MaxLength="50" />
+          <Property Name="tranxAmount" Type="float" />
+          <Property Name="tranxNotes" Type="varchar" MaxLength="50" />
+          <Property Name="ipAddress" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="DBModelStoreContainer">
+          <EntitySet Name="printandsubrates" EntityType="Self.printandsubrates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subscriber" EntityType="Self.subscriber" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subscriber_address" EntityType="Self.subscriber_address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subscriber_epaper" EntityType="Self.subscriber_epaper" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subscriber_print" EntityType="Self.subscriber_print" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subscriber_tranx" EntityType="Self.subscriber_tranx" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="printandsubrate">
+          <Key>
+            <PropertyRef Name="rateid" />
+          </Key>
+          <Property Name="rateid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Market" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RateDescr" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="PrintDayPattern" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="PrintTerm" Type="Int32" />
+          <Property Name="PrintTermUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EDayPattern" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ETerm" Type="Int32" />
+          <Property Name="ETermUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Curr" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Rate" Type="Double" />
+          <Property Name="SortOrder" Type="Int32" />
+          <Property Name="Active" Type="Int32" />
+        </EntityType>
+        <EntityType Name="subscriber_address">
+          <Key>
+            <PropertyRef Name="addressID" />
+            <PropertyRef Name="emailAddress" />
+          </Key>
+          <Property Name="addressID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subscriberID" Type="Int32" />
+          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="addressLine1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="addressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cityTown" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="stateParish" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="zipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="createdAt" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="subscriber_epaper">
+          <Key>
+            <PropertyRef Name="epaperID" />
+            <PropertyRef Name="emailAddress" />
+          </Key>
+          <Property Name="epaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subscriberID" Type="Int32" />
+          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="startDate" Type="DateTime" Precision="3" />
+          <Property Name="endDate" Type="DateTime" Precision="3" />
+          <Property Name="isActive" Type="Int32" />
+          <Property Name="subType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="createdAt" Type="DateTime" Precision="3" />
+          <Property Name="notificationEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="subscriber_print">
+          <Key>
+            <PropertyRef Name="printID" />
+          </Key>
+          <Property Name="printID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subscriberID" Type="Int32" />
+          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rateID" Type="Int32" />
+          <Property Name="addressID" Type="Int32" />
+          <Property Name="startDate" Type="DateTime" Precision="3" />
+          <Property Name="endDate" Type="DateTime" Precision="3" />
+          <Property Name="deliveryInstructions" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="circprosubid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="createdAt" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="subscriber_tranx">
+          <Key>
+            <PropertyRef Name="tranxID" />
+          </Key>
+          <Property Name="tranxID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subscriberID" Type="Int32" />
+          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cardOwner" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cardType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tranxDate" Type="DateTime" Precision="3" />
+          <Property Name="rateID" Type="Int32" />
+          <Property Name="tranxType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="orderID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tranxAmount" Type="Double" />
+          <Property Name="tranxNotes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ipAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="printandsubrates" EntityType="Self.printandsubrate" />
+          <EntitySet Name="subscriber_address" EntityType="Self.subscriber_address" />
+          <EntitySet Name="subscriber_epaper" EntityType="Self.subscriber_epaper" />
+          <EntitySet Name="subscriber_print" EntityType="Self.subscriber_print" />
+          <EntitySet Name="subscriber_tranx" EntityType="Self.subscriber_tranx" />
+          <EntitySet Name="subscribers" EntityType="DBModel.subscriber" />
+        </EntityContainer>
+        <EntityType Name="subscriber">
+          <Key>
+            <PropertyRef Name="subscriberID" />
+          </Key>
+          <Property Name="subscriberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="emailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="dateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="passwordHash" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="secretquestion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="secretans" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ipAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Int32" />
+          <Property Name="addressID" Type="Int32" />
+          <Property Name="phoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="newsletter" Type="Int32" />
+          <Property Name="createdAt" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="printandsubrates">
+            <EntityTypeMapping TypeName="DBModel.printandsubrate">
+              <MappingFragment StoreEntitySet="printandsubrates">
+                <ScalarProperty Name="rateid" ColumnName="rateid" />
+                <ScalarProperty Name="Market" ColumnName="Market" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="RateDescr" ColumnName="RateDescr" />
+                <ScalarProperty Name="PrintDayPattern" ColumnName="PrintDayPattern" />
+                <ScalarProperty Name="PrintTerm" ColumnName="PrintTerm" />
+                <ScalarProperty Name="PrintTermUnit" ColumnName="PrintTermUnit" />
+                <ScalarProperty Name="EDayPattern" ColumnName="EDayPattern" />
+                <ScalarProperty Name="ETerm" ColumnName="ETerm" />
+                <ScalarProperty Name="ETermUnit" ColumnName="ETermUnit" />
+                <ScalarProperty Name="Curr" ColumnName="Curr" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriber_address">
+            <EntityTypeMapping TypeName="DBModel.subscriber_address">
+              <MappingFragment StoreEntitySet="subscriber_address">
+                <ScalarProperty Name="addressID" ColumnName="addressID" />
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="addressLine1" ColumnName="addressLine1" />
+                <ScalarProperty Name="addressLine2" ColumnName="addressLine2" />
+                <ScalarProperty Name="cityTown" ColumnName="cityTown" />
+                <ScalarProperty Name="stateParish" ColumnName="stateParish" />
+                <ScalarProperty Name="zipCode" ColumnName="zipCode" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriber_epaper">
+            <EntityTypeMapping TypeName="DBModel.subscriber_epaper">
+              <MappingFragment StoreEntitySet="subscriber_epaper">
+                <ScalarProperty Name="epaperID" ColumnName="epaperID" />
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="subType" ColumnName="subType" />
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+                <ScalarProperty Name="notificationEmail" ColumnName="notificationEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriber_print">
+            <EntityTypeMapping TypeName="DBModel.subscriber_print">
+              <MappingFragment StoreEntitySet="subscriber_print">
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+                <ScalarProperty Name="printID" ColumnName="printID" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="rateID" ColumnName="rateID" />
+                <ScalarProperty Name="addressID" ColumnName="addressID" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="deliveryInstructions" ColumnName="deliveryInstructions" />
+                <ScalarProperty Name="circprosubid" ColumnName="circprosubid" />
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriber_tranx">
+            <EntityTypeMapping TypeName="DBModel.subscriber_tranx">
+              <MappingFragment StoreEntitySet="subscriber_tranx">
+                <ScalarProperty Name="tranxID" ColumnName="tranxID" />
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="cardOwner" ColumnName="cardOwner" />
+                <ScalarProperty Name="cardType" ColumnName="cardType" />
+                <ScalarProperty Name="tranxDate" ColumnName="tranxDate" />
+                <ScalarProperty Name="rateID" ColumnName="rateID" />
+                <ScalarProperty Name="tranxType" ColumnName="tranxType" />
+                <ScalarProperty Name="orderID" ColumnName="orderID" />
+                <ScalarProperty Name="tranxAmount" ColumnName="tranxAmount" />
+                <ScalarProperty Name="tranxNotes" ColumnName="tranxNotes" />
+                <ScalarProperty Name="ipAddress" ColumnName="ipAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscribers">
+            <EntityTypeMapping TypeName="DBModel.subscriber">
+              <MappingFragment StoreEntitySet="subscriber">
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+                <ScalarProperty Name="newsletter" ColumnName="newsletter" />
+                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+                <ScalarProperty Name="addressID" ColumnName="addressID" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="ipAddress" ColumnName="ipAddress" />
+                <ScalarProperty Name="secretans" ColumnName="secretans" />
+                <ScalarProperty Name="secretquestion" ColumnName="secretquestion" />
+                <ScalarProperty Name="passwordHash" ColumnName="passwordHash" />
+                <ScalarProperty Name="dateOfBirth" ColumnName="dateOfBirth" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

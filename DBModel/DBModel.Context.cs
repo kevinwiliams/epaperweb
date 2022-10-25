@@ -13,10 +13,10 @@ namespace ePaperWeb.DBModel
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Observer_newEntities : DbContext
+    public partial class Entities : DbContext
     {
-        public Observer_newEntities()
-            : base("name=Observer_newEntities")
+        public Entities()
+            : base("name=Entities")
         {
         }
     
@@ -25,6 +25,11 @@ namespace ePaperWeb.DBModel
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<euser> eusers { get; set; }
+        public virtual DbSet<printandsubrate> printandsubrates { get; set; }
+        public virtual DbSet<subscriber_address> subscriber_address { get; set; }
+        public virtual DbSet<subscriber_epaper> subscriber_epaper { get; set; }
+        public virtual DbSet<subscriber_print> subscriber_print { get; set; }
+        public virtual DbSet<subscriber_tranx> subscriber_tranx { get; set; }
+        public virtual DbSet<subscriber> subscribers { get; set; }
     }
 }
