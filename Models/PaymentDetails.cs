@@ -18,7 +18,7 @@ namespace ePaperWeb.Models
 
         [Display(Name = "Card Number")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Enter cardholder name")]
-        public int cardNumber { get; set; }
+        public string cardNumber { get; set; }
 
         [Display(Name = "CVV")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter card CVV number")]
