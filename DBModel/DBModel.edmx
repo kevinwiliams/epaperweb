@@ -72,6 +72,7 @@
           <Property Name="subType" Type="varchar" MaxLength="50" />
           <Property Name="createdAt" Type="datetime" />
           <Property Name="notificationEmail" Type="varchar" MaxLength="50" />
+          <Property Name="rateID" Type="int" />
         </EntityType>
         <EntityType Name="subscriber_print">
           <Key>
@@ -139,7 +140,6 @@
         <EntityType Name="subscriber_address">
           <Key>
             <PropertyRef Name="addressID" />
-            <PropertyRef Name="emailAddress" />
           </Key>
           <Property Name="addressID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="subscriberID" Type="Int32" />
@@ -155,7 +155,6 @@
         <EntityType Name="subscriber_epaper">
           <Key>
             <PropertyRef Name="epaperID" />
-            <PropertyRef Name="emailAddress" />
           </Key>
           <Property Name="epaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="subscriberID" Type="Int32" />
@@ -167,6 +166,7 @@
           <Property Name="subType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="createdAt" Type="DateTime" Precision="3" />
           <Property Name="notificationEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rateID" Type="Int32" />
         </EntityType>
         <EntityType Name="subscriber_print">
           <Key>
@@ -272,6 +272,7 @@
           <EntitySetMapping Name="subscriber_epaper">
             <EntityTypeMapping TypeName="DBModel.subscriber_epaper">
               <MappingFragment StoreEntitySet="subscriber_epaper">
+                <ScalarProperty Name="rateID" ColumnName="rateID" />
                 <ScalarProperty Name="epaperID" ColumnName="epaperID" />
                 <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
                 <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
@@ -288,8 +289,8 @@
           <EntitySetMapping Name="subscriber_print">
             <EntityTypeMapping TypeName="DBModel.subscriber_print">
               <MappingFragment StoreEntitySet="subscriber_print">
-                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
                 <ScalarProperty Name="printID" ColumnName="printID" />
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
                 <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
                 <ScalarProperty Name="rateID" ColumnName="rateID" />
                 <ScalarProperty Name="addressID" ColumnName="addressID" />
