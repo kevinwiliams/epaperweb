@@ -18,6 +18,7 @@ namespace ePaperWeb.Models
         public string LastName { get; set; }
 
         [Display(Name = "Email Address")]
+        [DataType(DataType.EmailAddress)]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Email address is required")]
         public string EmailAddress { get; set; }
 

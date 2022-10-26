@@ -350,6 +350,7 @@
     <Content Include="Views\Account\AddressDetails.cshtml" />
     <Content Include="Views\Account\SubscriptionInfo.cshtml" />
     <Content Include="Views\Account\PaymentDetails.cshtml" />
+    <Content Include="Views\Account\_SubcriptionSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

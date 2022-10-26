@@ -32,6 +32,7 @@ namespace ePaperWeb
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                      "~/Content/bootstrap.css",
+                     "~/Content/Site.css",
                      "~/assets/css/style.css"));
         }
     }
