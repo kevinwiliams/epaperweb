@@ -36,7 +36,7 @@ namespace ePaperWeb.Controllers
                     obj.emailAddress = data.EmailAddress;
                     obj.passwordHash = data.Password;
                     obj.createdAt = DateTime.Now;
-                    return View("PersonalDetails");
+                    return View("AddressDetails");
                 }
             }
             return View();
@@ -147,7 +147,7 @@ namespace ePaperWeb.Controllers
             {
                 Session["subscriber"] = new subscriber();
             }
-            return (subscriber)Session["customer"];
+            return (subscriber)Session["subscriber"];
         }
 
         private subscriber_address GetSubscriberAddress()
