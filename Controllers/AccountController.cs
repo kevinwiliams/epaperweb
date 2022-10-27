@@ -278,6 +278,16 @@ namespace ePaperWeb.Controllers
         }
 
 
+        [NonAction]
+        public bool IsEmailExist(string emailAddress)
+        {
+            using (Entities dc = new Entities())
+            {
+                var v = dc.subscribers.Where(a => a.emailAddress == emailAddress).FirstOrDefault();
+                return v != null;
+            }
+        }
+
         private subscriber GetSubscriber()
         {
             if (Session["subscriber"] == null)
