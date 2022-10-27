@@ -11,7 +11,8 @@ namespace ePaperWeb.DBModel
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class subscriber
     {
         public int subscriberID { get; set; }
@@ -28,5 +29,8 @@ namespace ePaperWeb.DBModel
         public string phoneNumber { get; set; }
         public Nullable<int> newsletter { get; set; }
         public Nullable<System.DateTime> createdAt { get; set; }
+
+        [ForeignKey("addressID")]
+        public virtual subscriber_address subscriber_address { get; set; }
     }
 }

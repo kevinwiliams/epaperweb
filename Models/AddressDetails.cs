@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using ePaperWeb.DBModel;
 
 namespace ePaperWeb.Models
 {
@@ -35,5 +37,8 @@ namespace ePaperWeb.Models
         [Display(Name = "Phone Number")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter a valid phone number")]
         public string phone { get; set; }
+
+        
     }
+
 }
