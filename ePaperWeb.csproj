@@ -152,6 +152,7 @@
     </Compile>
     <Compile Include="Models\LoginDetails.cs" />
     <Compile Include="Models\PaymentDetails.cs" />
+    <Compile Include="Models\PrintSubRates.cs" />
     <Compile Include="Models\SubscriptionDetails.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="DBModel\printandsubrate.cs">
@@ -346,11 +347,12 @@
     <Content Include="assets\img\fac.jpg" />
     <Content Include="Views\Account\Subscribe.cshtml" />
     <Content Include="Views\Shared\_loginPartial.cshtml" />
-    <Content Include="Views\Account\LoginDetails.cshtml" />
     <Content Include="Views\Account\AddressDetails.cshtml" />
     <Content Include="Views\Account\SubscriptionInfo.cshtml" />
     <Content Include="Views\Account\PaymentDetails.cshtml" />
     <Content Include="Views\Account\_SubcriptionSummary.cshtml" />
+    <Content Include="Views\Account\LoginDetails.cshtml" />
+    <Content Include="Views\Account\PaymentSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

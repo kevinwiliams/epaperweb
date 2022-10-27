@@ -17,7 +17,7 @@ namespace ePaperWeb.DBModel
         public int printID { get; set; }
         public Nullable<int> subscriberID { get; set; }
         public string emailAddress { get; set; }
-        public Nullable<int> rateID { get; set; }
+        public int rateID { get; set; }
         public Nullable<int> addressID { get; set; }
         public Nullable<System.DateTime> startDate { get; set; }
         public Nullable<System.DateTime> endDate { get; set; }

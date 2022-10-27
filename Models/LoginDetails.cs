@@ -24,11 +24,13 @@ namespace ePaperWeb.Models
 
         [Display(Name = "Password")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password is required")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Must have a minimum length of 5.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Display(Name = "Confirm Password")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Confirm Password is required")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Must have a minimum length of 5.")]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; }

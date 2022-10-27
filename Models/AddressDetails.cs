@@ -26,7 +26,7 @@ namespace ePaperWeb.Models
         public string stateParish { get; set; }
         
         [Display(Name = "Zip")]
-        public int? zipCode { get; set; }
+        public string zipCode { get; set; }
 
         [Display(Name = "Country")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please select a country")]

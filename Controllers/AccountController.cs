@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using ePaperWeb.Models;
 using ePaperWeb.DBModel;
+using System.Dynamic;
 
 namespace ePaperWeb.Controllers
 {
@@ -36,6 +37,7 @@ namespace ePaperWeb.Controllers
                     obj.emailAddress = data.EmailAddress;
                     obj.passwordHash = data.Password;
                     obj.createdAt = DateTime.Now;
+                    obj.ipAddress = Request.UserHostAddress;
                     return View("AddressDetails");
                 }
             }
@@ -46,6 +48,20 @@ namespace ePaperWeb.Controllers
         [HttpPost]
         public ActionResult AddressDetails(AddressDetails data, string prevBtn, string nextBtn)
         {
+            
+            if (prevBtn != null)
+            {
+                subscriber obj = GetSubscriber();
+                LoginDetails ld = new LoginDetails 
+                { 
+                    FirstName = obj.firstName,
+                    LastName = obj.lastName,
+                    EmailAddress = obj.emailAddress
+                };
+
+                return View("LoginDetails", ld);
+            }
+
             if (nextBtn != null)
             {
                 if (ModelState.IsValid)
@@ -58,11 +74,11 @@ namespace ePaperWeb.Controllers
                     objAdd.emailAddress = objSub.emailAddress;
 
                     objAdd.addressLine1 = data.addressLine1;
-                    objAdd.addressLine2 = data.addressLine1;
-                    objAdd.cityTown = data.addressLine1;
-                    objAdd.stateParish = data.addressLine1;
-                    objAdd.zipCode = data.addressLine1;
-                    objAdd.country = data.addressLine1;
+                    objAdd.addressLine2 = data.addressLine2;
+                    objAdd.cityTown = data.cityTown;
+                    objAdd.stateParish = data.stateParish;
+                    objAdd.zipCode = data.zipCode;
+                    objAdd.country = data.country;
                     objAdd.createdAt = DateTime.Now;
 
                     return View("SubscriptionInfo");
@@ -75,6 +91,35 @@ namespace ePaperWeb.Controllers
         [HttpPost]
         public ActionResult SubscriptionInfo(SubscriptionDetails data, string prevBtn, string nextBtn)
         {
+            //dynamic printSubRateModel = new ExpandoObject();
+            Entities db = new Entities();
+
+            PrintSubRates psr = new PrintSubRates
+            {
+                RatesList = db.printandsubrates.ToList(),
+                rateID = 0
+            };
+
+            //printSubRateModel.PrintSubRates = psr;
+            //printSubRateModel.data = data;
+
+
+            if (prevBtn != null)
+            {
+                subscriber_address objAdd = GetSubscriberAddress();
+                AddressDetails ad = new AddressDetails
+                {
+                    addressLine1 = objAdd.addressLine1,
+                    addressLine2 = objAdd.addressLine2,
+                    cityTown = objAdd.cityTown,
+                    stateParish = objAdd.stateParish,
+                    zipCode = objAdd.zipCode,
+                    country = objAdd.country
+                };
+
+                return View("AddressDetails", ad);
+            }
+
             if (nextBtn != null)
             {
                 if (ModelState.IsValid)
@@ -85,48 +130,139 @@ namespace ePaperWeb.Controllers
 
                     objSub.newsletter = data.newsletterSignUp;
 
-
-
-                    if(data.subType == "Print")
+                    if (data.subType == "Print")
                     {
                         objPr.startDate = data.startDate;
                         objPr.endDate = data.endDate;
                         objPr.rateID = data.rateID;
                         objPr.emailAddress = objSub.emailAddress;
+                        objPr.deliveryInstructions = data.deliveryInstructions;
+                        objPr.createdAt = DateTime.Now;
+
                     }
                     else
                     {
                         objEp.startDate = data.startDate;
                         objEp.endDate = data.endDate;
-                        objPr.rateID = data.rateID;
-                        objPr.emailAddress = objSub.emailAddress;
+                        objEp.rateID = data.rateID;
+                        objEp.subType = data.subType;
+                        objEp.isActive = 1;
+                        objEp.emailAddress = objSub.emailAddress;
+                        objEp.notificationEmail = data.notificationEmail;
+                        objEp.createdAt = DateTime.Now;
                     }
 
                     return View("PaymentDetails");
                 }
             }
-            return View();
+            
+            return View(psr);
         }
 
 
         [HttpPost]
         public ActionResult PaymentDetails(PaymentDetails data, string prevBtn, string nextBtn)
         {
+            subscriber_epaper objEp = GetEpaperDetails();
+            subscriber_print objPr = GetPrintDetails();
+            if (prevBtn != null)
+            {
+                SubscriptionDetails sd = new SubscriptionDetails();
+                sd.rateID = objPr.rateID;
+                sd.rateID = objEp.rateID;
+                return View("SubscriptionInfo", sd);
+            }
+
+            
+
             if (nextBtn != null)
             {
                 if (ModelState.IsValid)
                 {
+                    //get all session variables
                     subscriber objSub = GetSubscriber();
+                    subscriber_address objAdd = GetSubscriberAddress();
+                    subscriber_epaper objE = GetEpaperDetails();
+                    subscriber_print objP = GetPrintDetails();
                     subscriber_tranx objTran = GetTransaction();
 
-                    objTran.emailAddress = objSub.emailAddress;
+                    int subscriberID = 0;
+                    int addressID = 0;
+                    //TODO: better implementation
+                    int rateID = (objE.rateID > 0) ? objE.rateID : objP.rateID;
 
-                    objTran.rateID = data.rateID;
+                    //save to DB
+                    using (var context = new Entities())
+                    {
+                        //save subscribers
+                        objSub.isActive = 1;
+                        context.subscribers.Add(objSub);
+                        context.SaveChanges();
 
-                    objTran.cardType = data.cardType;
-                    objTran.cardOwner = data.cardOwner;
-                    objTran.cardOwner = data.cardOwner;
-                    objTran.tranxDate = DateTime.Now;
+                        //get Subscriber ID
+                        subscriberID = objSub.subscriberID;
+
+                        //save address
+                        objAdd.subscriberID = subscriberID;
+                        context.subscriber_address.Add(objAdd);
+                        context.SaveChanges();
+
+                        //get Address ID
+                        addressID = objAdd.addressID;
+
+                        //update subscribers table w/ address ID
+                        var result = context.subscribers.SingleOrDefault(b => b.subscriberID == subscriberID);
+                        if (result != null)
+                        {
+                            result.addressID = addressID;
+                            context.SaveChanges();
+                        }
+                        //save based on subscription
+                        var subType = context.printandsubrates.SingleOrDefault(b => b.rateid == rateID);
+                        if (subType != null)
+                        {
+
+                            switch (subType.Type)
+                            {
+                                case "Print":
+                                    //save print subscription
+                                    objP.subscriberID = subscriberID;
+                                    context.subscriber_print.Add(objP);
+                                    context.SaveChanges();
+                                    break;
+
+                                case "Epaper":
+                                    //save epaper subscription
+                                    objE.subscriberID = subscriberID;
+                                    context.subscriber_epaper.Add(objE);
+                                    context.SaveChanges();
+                                    break;
+
+                                case "Bundle":
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            //save transaction
+                            objTran.emailAddress = objSub.emailAddress;
+                            objTran.cardType = data.cardType;
+                            objTran.cardOwner = data.cardOwner;
+                            objTran.tranxAmount = subType.Rate;
+                            objTran.tranxDate = DateTime.Now;
+                            objTran.subscriberID = subscriberID;
+                            objTran.ipAddress = Request.UserHostAddress;
+                            context.subscriber_tranx.Add(objTran);
+                            context.SaveChanges();
+                        }
+                    }
+
+                    RemoveSubscriber();
+
+                    
+
+
+
                     return View("PaymentSuccess");
                 }
             }
@@ -135,6 +271,7 @@ namespace ePaperWeb.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult PaymentSuccess()
         {
             return View();

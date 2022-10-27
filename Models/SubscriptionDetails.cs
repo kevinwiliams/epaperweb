@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using ePaperWeb.DBModel;
 using System.Linq;
 using System.Web;
 
@@ -30,6 +31,8 @@ namespace ePaperWeb.Models
         [Display(Name = "Terms & Conditions")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please select terms and conditions")]
         public int termsAndCon { get; set; }
+
+        public List<printandsubrate> RatesList { get; set; }
 
     }
 }

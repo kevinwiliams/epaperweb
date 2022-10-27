@@ -28,6 +28,7 @@ namespace ePaperWeb.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Enter card expiration date")]
         public string cardExp { get; set; }
 
+        [Required]
         public int rateID;
 
       
