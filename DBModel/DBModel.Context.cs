@@ -26,10 +26,10 @@ namespace ePaperWeb.DBModel
         }
     
         public virtual DbSet<printandsubrate> printandsubrates { get; set; }
+        public virtual DbSet<subscriber> subscribers { get; set; }
         public virtual DbSet<subscriber_address> subscriber_address { get; set; }
         public virtual DbSet<subscriber_epaper> subscriber_epaper { get; set; }
         public virtual DbSet<subscriber_print> subscriber_print { get; set; }
         public virtual DbSet<subscriber_tranx> subscriber_tranx { get; set; }
-        public virtual DbSet<subscriber> subscribers { get; set; }
     }
 }

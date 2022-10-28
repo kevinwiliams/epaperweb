@@ -155,7 +155,7 @@ namespace ePaperWeb.Controllers
                 }
             }
             
-            return View(psr);
+            return View();
         }
 
 

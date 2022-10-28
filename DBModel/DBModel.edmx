@@ -30,18 +30,18 @@
           </Key>
           <Property Name="subscriberID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="firstName" Type="varchar" MaxLength="50" />
-          <Property Name="lastName" Type="varchar" MaxLength="50" />
+          <Property Name="firstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="dateOfBirth" Type="datetime" />
-          <Property Name="passwordHash" Type="varchar" MaxLength="300" />
+          <Property Name="passwordHash" Type="varchar" MaxLength="300" Nullable="false" />
           <Property Name="secretquestion" Type="varchar" MaxLength="100" />
           <Property Name="secretans" Type="varchar" MaxLength="50" />
           <Property Name="ipAddress" Type="varchar" MaxLength="50" />
-          <Property Name="isActive" Type="int" />
+          <Property Name="isActive" Type="int" Nullable="false" />
           <Property Name="addressID" Type="int" />
           <Property Name="phoneNumber" Type="varchar" MaxLength="50" />
           <Property Name="newsletter" Type="int" />
-          <Property Name="createdAt" Type="datetime" />
+          <Property Name="createdAt" Type="datetime" Nullable="false" />
           <Property Name="token" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="subscriber_address">
@@ -51,44 +51,44 @@
           <Property Name="addressID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="subscriberID" Type="int" />
           <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="addressLine1" Type="varchar" MaxLength="50" />
+          <Property Name="addressLine1" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="addressLine2" Type="varchar" MaxLength="50" />
           <Property Name="cityTown" Type="varchar" MaxLength="50" />
           <Property Name="stateParish" Type="varchar" MaxLength="50" />
           <Property Name="zipCode" Type="varchar" MaxLength="15" />
-          <Property Name="country" Type="varchar" MaxLength="50" />
-          <Property Name="createdAt" Type="datetime" />
+          <Property Name="country" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="createdAt" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="subscriber_epaper">
           <Key>
             <PropertyRef Name="epaperID" />
           </Key>
           <Property Name="epaperID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="subscriberID" Type="int" />
+          <Property Name="subscriberID" Type="int" Nullable="false" />
           <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="token" Type="varchar" MaxLength="50" />
-          <Property Name="startDate" Type="datetime" />
-          <Property Name="endDate" Type="datetime" />
-          <Property Name="isActive" Type="int" />
+          <Property Name="rateID" Type="int" Nullable="false" />
+          <Property Name="startDate" Type="datetime" Nullable="false" />
+          <Property Name="endDate" Type="datetime" Nullable="false" />
+          <Property Name="isActive" Type="int" Nullable="false" />
           <Property Name="subType" Type="varchar" MaxLength="50" />
-          <Property Name="createdAt" Type="datetime" />
+          <Property Name="createdAt" Type="datetime" Nullable="false" />
           <Property Name="notificationEmail" Type="varchar" MaxLength="50" />
-          <Property Name="rateID" Type="int" />
         </EntityType>
         <EntityType Name="subscriber_print">
           <Key>
             <PropertyRef Name="printID" />
           </Key>
           <Property Name="printID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="subscriberID" Type="int" />
-          <Property Name="emailAddress" Type="varchar" MaxLength="50" />
-          <Property Name="rateID" Type="int" />
-          <Property Name="addressID" Type="int" />
-          <Property Name="startDate" Type="datetime" />
-          <Property Name="endDate" Type="datetime" />
+          <Property Name="subscriberID" Type="int" Nullable="false" />
+          <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="rateID" Type="int" Nullable="false" />
+          <Property Name="addressID" Type="int" Nullable="false" />
+          <Property Name="startDate" Type="datetime" Nullable="false" />
+          <Property Name="endDate" Type="datetime" Nullable="false" />
           <Property Name="deliveryInstructions" Type="varchar" MaxLength="200" />
           <Property Name="circprosubid" Type="varchar" MaxLength="50" />
-          <Property Name="createdAt" Type="datetime" />
+          <Property Name="createdAt" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="subscriber_tranx">
           <Key>
@@ -120,7 +120,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="epaper">
-          <End Role="subscriber" Type="Self.subscriber" Multiplicity="0..1" />
+          <End Role="subscriber" Type="Self.subscriber" Multiplicity="1" />
           <End Role="subscriber_epaper" Type="Self.subscriber_epaper" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="subscriber">
@@ -132,7 +132,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="print">
-          <End Role="subscriber" Type="Self.subscriber" Multiplicity="0..1" />
+          <End Role="subscriber" Type="Self.subscriber" Multiplicity="1" />
           <End Role="subscriber_print" Type="Self.subscriber_print" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="subscriber">
@@ -183,6 +183,30 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="printandsubrates" EntityType="DBModel.printandsubrate" />
+          <EntitySet Name="subscribers" EntityType="DBModel.subscriber" />
+          <EntitySet Name="subscriber_address" EntityType="DBModel.subscriber_address" />
+          <EntitySet Name="subscriber_epaper" EntityType="DBModel.subscriber_epaper" />
+          <EntitySet Name="subscriber_print" EntityType="DBModel.subscriber_print" />
+          <EntitySet Name="subscriber_tranx" EntityType="DBModel.subscriber_tranx" />
+          <AssociationSet Name="address" Association="DBModel.address">
+            <End Role="subscriber_address" EntitySet="subscriber_address" />
+            <End Role="subscriber" EntitySet="subscribers" />
+          </AssociationSet>
+          <AssociationSet Name="epaper" Association="DBModel.epaper">
+            <End Role="subscriber" EntitySet="subscribers" />
+            <End Role="subscriber_epaper" EntitySet="subscriber_epaper" />
+          </AssociationSet>
+          <AssociationSet Name="print" Association="DBModel.print">
+            <End Role="subscriber" EntitySet="subscribers" />
+            <End Role="subscriber_print" EntitySet="subscriber_print" />
+          </AssociationSet>
+          <AssociationSet Name="tranx" Association="DBModel.tranx">
+            <End Role="subscriber" EntitySet="subscribers" />
+            <End Role="subscriber_tranx" EntitySet="subscriber_tranx" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="printandsubrate">
           <Key>
             <PropertyRef Name="rateid" />
@@ -202,20 +226,44 @@
           <Property Name="SortOrder" Type="Int32" />
           <Property Name="Active" Type="Int32" />
         </EntityType>
+        <EntityType Name="subscriber">
+          <Key>
+            <PropertyRef Name="subscriberID" />
+          </Key>
+          <Property Name="subscriberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="emailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="firstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="dateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="passwordHash" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="secretquestion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="secretans" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ipAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Int32" Nullable="false" />
+          <Property Name="addressID" Type="Int32" />
+          <Property Name="phoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="newsletter" Type="Int32" />
+          <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="subscriber_address" Relationship="DBModel.address" FromRole="subscriber" ToRole="subscriber_address" />
+          <NavigationProperty Name="subscriber_epaper" Relationship="DBModel.epaper" FromRole="subscriber" ToRole="subscriber_epaper" />
+          <NavigationProperty Name="subscriber_print" Relationship="DBModel.print" FromRole="subscriber" ToRole="subscriber_print" />
+          <NavigationProperty Name="subscriber_tranx" Relationship="DBModel.tranx" FromRole="subscriber" ToRole="subscriber_tranx" />
+        </EntityType>
         <EntityType Name="subscriber_address">
           <Key>
             <PropertyRef Name="addressID" />
           </Key>
           <Property Name="addressID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="subscriberID" Type="Int32" />
-          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="addressLine1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="addressLine1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="addressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="cityTown" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="stateParish" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="zipCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="createdAt" Type="DateTime" Precision="3" />
+          <Property Name="country" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="subscribers" Relationship="DBModel.address" FromRole="subscriber_address" ToRole="subscriber" />
         </EntityType>
         <EntityType Name="subscriber_epaper">
@@ -223,16 +271,16 @@
             <PropertyRef Name="epaperID" />
           </Key>
           <Property Name="epaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="subscriberID" Type="Int32" />
-          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="subscriberID" Type="Int32" Nullable="false" />
+          <Property Name="emailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="startDate" Type="DateTime" Precision="3" />
-          <Property Name="endDate" Type="DateTime" Precision="3" />
-          <Property Name="isActive" Type="Int32" />
+          <Property Name="rateID" Type="Int32" Nullable="false" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="endDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="isActive" Type="Int32" Nullable="false" />
           <Property Name="subType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="createdAt" Type="DateTime" Precision="3" />
+          <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="notificationEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="rateID" Type="Int32" />
           <NavigationProperty Name="subscriber" Relationship="DBModel.epaper" FromRole="subscriber_epaper" ToRole="subscriber" />
         </EntityType>
         <EntityType Name="subscriber_print">
@@ -240,15 +288,15 @@
             <PropertyRef Name="printID" />
           </Key>
           <Property Name="printID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="subscriberID" Type="Int32" />
-          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="rateID" Type="Int32" />
-          <Property Name="addressID" Type="Int32" />
-          <Property Name="startDate" Type="DateTime" Precision="3" />
-          <Property Name="endDate" Type="DateTime" Precision="3" />
+          <Property Name="subscriberID" Type="Int32" Nullable="false" />
+          <Property Name="emailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rateID" Type="Int32" Nullable="false" />
+          <Property Name="addressID" Type="Int32" Nullable="false" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="endDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="deliveryInstructions" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="circprosubid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="createdAt" Type="DateTime" Precision="3" />
+          <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="subscriber" Relationship="DBModel.print" FromRole="subscriber_print" ToRole="subscriber" />
         </EntityType>
         <EntityType Name="subscriber_tranx">
@@ -269,54 +317,6 @@
           <Property Name="ipAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="subscriber" Relationship="DBModel.tranx" FromRole="subscriber_tranx" ToRole="subscriber" />
         </EntityType>
-        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="printandsubrates" EntityType="Self.printandsubrate" />
-          <EntitySet Name="subscriber_address" EntityType="Self.subscriber_address" />
-          <EntitySet Name="subscriber_epaper" EntityType="Self.subscriber_epaper" />
-          <EntitySet Name="subscriber_print" EntityType="Self.subscriber_print" />
-          <EntitySet Name="subscriber_tranx" EntityType="Self.subscriber_tranx" />
-          <EntitySet Name="subscribers" EntityType="DBModel.subscriber" />
-          <AssociationSet Name="address" Association="DBModel.address">
-            <End Role="subscriber_address" EntitySet="subscriber_address" />
-            <End Role="subscriber" EntitySet="subscribers" />
-          </AssociationSet>
-          <AssociationSet Name="epaper" Association="DBModel.epaper">
-            <End Role="subscriber" EntitySet="subscribers" />
-            <End Role="subscriber_epaper" EntitySet="subscriber_epaper" />
-          </AssociationSet>
-          <AssociationSet Name="print" Association="DBModel.print">
-            <End Role="subscriber" EntitySet="subscribers" />
-            <End Role="subscriber_print" EntitySet="subscriber_print" />
-          </AssociationSet>
-          <AssociationSet Name="tranx" Association="DBModel.tranx">
-            <End Role="subscriber" EntitySet="subscribers" />
-            <End Role="subscriber_tranx" EntitySet="subscriber_tranx" />
-          </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="subscriber">
-          <Key>
-            <PropertyRef Name="subscriberID" />
-          </Key>
-          <Property Name="subscriberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="emailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="dateOfBirth" Type="DateTime" Precision="3" />
-          <Property Name="passwordHash" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="secretquestion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="secretans" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ipAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="isActive" Type="Int32" />
-          <Property Name="addressID" Type="Int32" />
-          <Property Name="phoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="newsletter" Type="Int32" />
-          <Property Name="createdAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="subscriber_address" Relationship="DBModel.address" FromRole="subscriber" ToRole="subscriber_address" />
-          <NavigationProperty Name="subscriber_epaper" Relationship="DBModel.epaper" FromRole="subscriber" ToRole="subscriber_epaper" />
-          <NavigationProperty Name="subscriber_print" Relationship="DBModel.print" FromRole="subscriber" ToRole="subscriber_print" />
-          <NavigationProperty Name="subscriber_tranx" Relationship="DBModel.tranx" FromRole="subscriber" ToRole="subscriber_tranx" />
-          <Property Name="token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <Association Name="address">
           <End Type="DBModel.subscriber_address" Role="subscriber_address" Multiplicity="0..1" />
           <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="*" />
@@ -330,7 +330,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="epaper">
-          <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="0..1" />
+          <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="1" />
           <End Type="DBModel.subscriber_epaper" Role="subscriber_epaper" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="subscriber">
@@ -342,7 +342,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="print">
-          <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="0..1" />
+          <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="1" />
           <End Type="DBModel.subscriber_print" Role="subscriber_print" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="subscriber">
@@ -365,7 +365,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -374,87 +374,20 @@
           <EntitySetMapping Name="printandsubrates">
             <EntityTypeMapping TypeName="DBModel.printandsubrate">
               <MappingFragment StoreEntitySet="printandsubrates">
-                <ScalarProperty Name="rateid" ColumnName="rateid" />
-                <ScalarProperty Name="Market" ColumnName="Market" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="RateDescr" ColumnName="RateDescr" />
-                <ScalarProperty Name="PrintDayPattern" ColumnName="PrintDayPattern" />
-                <ScalarProperty Name="PrintTerm" ColumnName="PrintTerm" />
-                <ScalarProperty Name="PrintTermUnit" ColumnName="PrintTermUnit" />
-                <ScalarProperty Name="EDayPattern" ColumnName="EDayPattern" />
-                <ScalarProperty Name="ETerm" ColumnName="ETerm" />
-                <ScalarProperty Name="ETermUnit" ColumnName="ETermUnit" />
-                <ScalarProperty Name="Curr" ColumnName="Curr" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
-                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="subscriber_address">
-            <EntityTypeMapping TypeName="DBModel.subscriber_address">
-              <MappingFragment StoreEntitySet="subscriber_address">
-                <ScalarProperty Name="addressID" ColumnName="addressID" />
-                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
-                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
-                <ScalarProperty Name="addressLine1" ColumnName="addressLine1" />
-                <ScalarProperty Name="addressLine2" ColumnName="addressLine2" />
-                <ScalarProperty Name="cityTown" ColumnName="cityTown" />
-                <ScalarProperty Name="stateParish" ColumnName="stateParish" />
-                <ScalarProperty Name="zipCode" ColumnName="zipCode" />
-                <ScalarProperty Name="country" ColumnName="country" />
-                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="subscriber_epaper">
-            <EntityTypeMapping TypeName="DBModel.subscriber_epaper">
-              <MappingFragment StoreEntitySet="subscriber_epaper">
-                <ScalarProperty Name="rateID" ColumnName="rateID" />
-                <ScalarProperty Name="epaperID" ColumnName="epaperID" />
-                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
-                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
-                <ScalarProperty Name="token" ColumnName="token" />
-                <ScalarProperty Name="startDate" ColumnName="startDate" />
-                <ScalarProperty Name="endDate" ColumnName="endDate" />
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="subType" ColumnName="subType" />
-                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
-                <ScalarProperty Name="notificationEmail" ColumnName="notificationEmail" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="subscriber_print">
-            <EntityTypeMapping TypeName="DBModel.subscriber_print">
-              <MappingFragment StoreEntitySet="subscriber_print">
-                <ScalarProperty Name="printID" ColumnName="printID" />
-                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
-                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
-                <ScalarProperty Name="rateID" ColumnName="rateID" />
-                <ScalarProperty Name="addressID" ColumnName="addressID" />
-                <ScalarProperty Name="startDate" ColumnName="startDate" />
-                <ScalarProperty Name="endDate" ColumnName="endDate" />
-                <ScalarProperty Name="deliveryInstructions" ColumnName="deliveryInstructions" />
-                <ScalarProperty Name="circprosubid" ColumnName="circprosubid" />
-                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="subscriber_tranx">
-            <EntityTypeMapping TypeName="DBModel.subscriber_tranx">
-              <MappingFragment StoreEntitySet="subscriber_tranx">
-                <ScalarProperty Name="tranxID" ColumnName="tranxID" />
-                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
-                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
-                <ScalarProperty Name="cardOwner" ColumnName="cardOwner" />
-                <ScalarProperty Name="cardType" ColumnName="cardType" />
-                <ScalarProperty Name="tranxDate" ColumnName="tranxDate" />
-                <ScalarProperty Name="rateID" ColumnName="rateID" />
-                <ScalarProperty Name="tranxType" ColumnName="tranxType" />
-                <ScalarProperty Name="orderID" ColumnName="orderID" />
-                <ScalarProperty Name="tranxAmount" ColumnName="tranxAmount" />
-                <ScalarProperty Name="tranxNotes" ColumnName="tranxNotes" />
-                <ScalarProperty Name="ipAddress" ColumnName="ipAddress" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Curr" ColumnName="Curr" />
+                <ScalarProperty Name="ETermUnit" ColumnName="ETermUnit" />
+                <ScalarProperty Name="ETerm" ColumnName="ETerm" />
+                <ScalarProperty Name="EDayPattern" ColumnName="EDayPattern" />
+                <ScalarProperty Name="PrintTermUnit" ColumnName="PrintTermUnit" />
+                <ScalarProperty Name="PrintTerm" ColumnName="PrintTerm" />
+                <ScalarProperty Name="PrintDayPattern" ColumnName="PrintDayPattern" />
+                <ScalarProperty Name="RateDescr" ColumnName="RateDescr" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Market" ColumnName="Market" />
+                <ScalarProperty Name="rateid" ColumnName="rateid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -476,6 +409,73 @@
                 <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
                 <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriber_address">
+            <EntityTypeMapping TypeName="DBModel.subscriber_address">
+              <MappingFragment StoreEntitySet="subscriber_address">
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="zipCode" ColumnName="zipCode" />
+                <ScalarProperty Name="stateParish" ColumnName="stateParish" />
+                <ScalarProperty Name="cityTown" ColumnName="cityTown" />
+                <ScalarProperty Name="addressLine2" ColumnName="addressLine2" />
+                <ScalarProperty Name="addressLine1" ColumnName="addressLine1" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+                <ScalarProperty Name="addressID" ColumnName="addressID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriber_epaper">
+            <EntityTypeMapping TypeName="DBModel.subscriber_epaper">
+              <MappingFragment StoreEntitySet="subscriber_epaper">
+                <ScalarProperty Name="notificationEmail" ColumnName="notificationEmail" />
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+                <ScalarProperty Name="subType" ColumnName="subType" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="rateID" ColumnName="rateID" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+                <ScalarProperty Name="epaperID" ColumnName="epaperID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriber_print">
+            <EntityTypeMapping TypeName="DBModel.subscriber_print">
+              <MappingFragment StoreEntitySet="subscriber_print">
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+                <ScalarProperty Name="circprosubid" ColumnName="circprosubid" />
+                <ScalarProperty Name="deliveryInstructions" ColumnName="deliveryInstructions" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="addressID" ColumnName="addressID" />
+                <ScalarProperty Name="rateID" ColumnName="rateID" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+                <ScalarProperty Name="printID" ColumnName="printID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriber_tranx">
+            <EntityTypeMapping TypeName="DBModel.subscriber_tranx">
+              <MappingFragment StoreEntitySet="subscriber_tranx">
+                <ScalarProperty Name="ipAddress" ColumnName="ipAddress" />
+                <ScalarProperty Name="tranxNotes" ColumnName="tranxNotes" />
+                <ScalarProperty Name="tranxAmount" ColumnName="tranxAmount" />
+                <ScalarProperty Name="orderID" ColumnName="orderID" />
+                <ScalarProperty Name="tranxType" ColumnName="tranxType" />
+                <ScalarProperty Name="rateID" ColumnName="rateID" />
+                <ScalarProperty Name="tranxDate" ColumnName="tranxDate" />
+                <ScalarProperty Name="cardType" ColumnName="cardType" />
+                <ScalarProperty Name="cardOwner" ColumnName="cardOwner" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
+                <ScalarProperty Name="tranxID" ColumnName="tranxID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

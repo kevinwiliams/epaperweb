@@ -29,7 +29,7 @@ namespace ePaperWeb.DBModel
         public string stateParish { get; set; }
         public string zipCode { get; set; }
         public string country { get; set; }
-        public Nullable<System.DateTime> createdAt { get; set; }
+        public System.DateTime createdAt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<subscriber> subscribers { get; set; }

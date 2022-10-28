@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="acfd747ac3d042c1960ad2058a472d8f" Name="Diagram1">
-        <EntityTypeShape EntityType="DBModel.printandsubrate" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.subscriber_address" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.subscriber_epaper" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.subscriber_print" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.subscriber_tranx" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.subscriber" Width="1.5" PointX="2.75" PointY="0.625" />
+        <EntityTypeShape EntityType="DBModel.printandsubrate" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.subscriber" Width="1.5" PointX="3" PointY="4.75" />
+        <EntityTypeShape EntityType="DBModel.subscriber_address" Width="1.5" PointX="0.75" PointY="5.625" />
+        <EntityTypeShape EntityType="DBModel.subscriber_epaper" Width="1.5" PointX="5.25" PointY="9.5" />
+        <EntityTypeShape EntityType="DBModel.subscriber_print" Width="1.5" PointX="5.25" PointY="1.375" />
+        <EntityTypeShape EntityType="DBModel.subscriber_tranx" Width="1.5" PointX="5.25" PointY="5.25" />
         <AssociationConnector Association="DBModel.address" />
         <AssociationConnector Association="DBModel.epaper" />
         <AssociationConnector Association="DBModel.print" />

@@ -15,16 +15,16 @@ namespace ePaperWeb.DBModel
     public partial class subscriber_epaper
     {
         public int epaperID { get; set; }
-        public Nullable<int> subscriberID { get; set; }
+        public int subscriberID { get; set; }
         public string emailAddress { get; set; }
         public string token { get; set; }
-        public Nullable<System.DateTime> startDate { get; set; }
-        public Nullable<System.DateTime> endDate { get; set; }
-        public Nullable<int> isActive { get; set; }
+        public int rateID { get; set; }
+        public System.DateTime startDate { get; set; }
+        public System.DateTime endDate { get; set; }
+        public int isActive { get; set; }
         public string subType { get; set; }
-        public Nullable<System.DateTime> createdAt { get; set; }
+        public System.DateTime createdAt { get; set; }
         public string notificationEmail { get; set; }
-        public Nullable<int> rateID { get; set; }
     
         public virtual subscriber subscriber { get; set; }
     }
