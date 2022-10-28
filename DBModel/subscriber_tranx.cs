@@ -26,5 +26,7 @@ namespace ePaperWeb.DBModel
         public Nullable<double> tranxAmount { get; set; }
         public string tranxNotes { get; set; }
         public string ipAddress { get; set; }
+    
+        public virtual subscriber subscriber { get; set; }
     }
 }

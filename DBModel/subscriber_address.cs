@@ -14,6 +14,12 @@ namespace ePaperWeb.DBModel
     
     public partial class subscriber_address
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public subscriber_address()
+        {
+            this.subscribers = new HashSet<subscriber>();
+        }
+    
         public int addressID { get; set; }
         public Nullable<int> subscriberID { get; set; }
         public string emailAddress { get; set; }
@@ -24,5 +30,8 @@ namespace ePaperWeb.DBModel
         public string zipCode { get; set; }
         public string country { get; set; }
         public Nullable<System.DateTime> createdAt { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subscriber> subscribers { get; set; }
     }
 }

@@ -24,6 +24,8 @@ namespace ePaperWeb.DBModel
         public string subType { get; set; }
         public Nullable<System.DateTime> createdAt { get; set; }
         public string notificationEmail { get; set; }
-        public int rateID { get; set; }
+        public Nullable<int> rateID { get; set; }
+    
+        public virtual subscriber subscriber { get; set; }
     }
 }

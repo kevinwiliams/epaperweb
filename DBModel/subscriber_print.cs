@@ -24,5 +24,7 @@ namespace ePaperWeb.DBModel
         public string deliveryInstructions { get; set; }
         public string circprosubid { get; set; }
         public Nullable<System.DateTime> createdAt { get; set; }
+    
+        public virtual subscriber subscriber { get; set; }
     }
 }

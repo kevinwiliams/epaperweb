@@ -11,10 +11,17 @@ namespace ePaperWeb.DBModel
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class subscriber
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public subscriber()
+        {
+            this.subscriber_epaper = new HashSet<subscriber_epaper>();
+            this.subscriber_print = new HashSet<subscriber_print>();
+            this.subscriber_tranx = new HashSet<subscriber_tranx>();
+        }
+    
         public int subscriberID { get; set; }
         public string emailAddress { get; set; }
         public string firstName { get; set; }
@@ -29,8 +36,14 @@ namespace ePaperWeb.DBModel
         public string phoneNumber { get; set; }
         public Nullable<int> newsletter { get; set; }
         public Nullable<System.DateTime> createdAt { get; set; }
-
-        [ForeignKey("addressID")]
+        public string token { get; set; }
+    
         public virtual subscriber_address subscriber_address { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subscriber_epaper> subscriber_epaper { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subscriber_print> subscriber_print { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subscriber_tranx> subscriber_tranx { get; set; }
     }
 }

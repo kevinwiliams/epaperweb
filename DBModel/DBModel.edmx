@@ -42,6 +42,7 @@
           <Property Name="phoneNumber" Type="varchar" MaxLength="50" />
           <Property Name="newsletter" Type="int" />
           <Property Name="createdAt" Type="datetime" />
+          <Property Name="token" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="subscriber_address">
           <Key>
@@ -54,7 +55,7 @@
           <Property Name="addressLine2" Type="varchar" MaxLength="50" />
           <Property Name="cityTown" Type="varchar" MaxLength="50" />
           <Property Name="stateParish" Type="varchar" MaxLength="50" />
-          <Property Name="zipCode" Type="varchar" MaxLength="50" />
+          <Property Name="zipCode" Type="varchar" MaxLength="15" />
           <Property Name="country" Type="varchar" MaxLength="50" />
           <Property Name="createdAt" Type="datetime" />
         </EntityType>
@@ -106,6 +107,54 @@
           <Property Name="tranxNotes" Type="varchar" MaxLength="50" />
           <Property Name="ipAddress" Type="varchar" MaxLength="50" />
         </EntityType>
+        <Association Name="address">
+          <End Role="subscriber_address" Type="Self.subscriber_address" Multiplicity="0..1" />
+          <End Role="subscriber" Type="Self.subscriber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber_address">
+              <PropertyRef Name="addressID" />
+            </Principal>
+            <Dependent Role="subscriber">
+              <PropertyRef Name="addressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="epaper">
+          <End Role="subscriber" Type="Self.subscriber" Multiplicity="0..1" />
+          <End Role="subscriber_epaper" Type="Self.subscriber_epaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber">
+              <PropertyRef Name="subscriberID" />
+            </Principal>
+            <Dependent Role="subscriber_epaper">
+              <PropertyRef Name="subscriberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="print">
+          <End Role="subscriber" Type="Self.subscriber" Multiplicity="0..1" />
+          <End Role="subscriber_print" Type="Self.subscriber_print" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber">
+              <PropertyRef Name="subscriberID" />
+            </Principal>
+            <Dependent Role="subscriber_print">
+              <PropertyRef Name="subscriberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tranx">
+          <End Role="subscriber" Type="Self.subscriber" Multiplicity="0..1" />
+          <End Role="subscriber_tranx" Type="Self.subscriber_tranx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber">
+              <PropertyRef Name="subscriberID" />
+            </Principal>
+            <Dependent Role="subscriber_tranx">
+              <PropertyRef Name="subscriberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DBModelStoreContainer">
           <EntitySet Name="printandsubrates" EntityType="Self.printandsubrates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="subscriber" EntityType="Self.subscriber" Schema="dbo" store:Type="Tables" />
@@ -113,6 +162,22 @@
           <EntitySet Name="subscriber_epaper" EntityType="Self.subscriber_epaper" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="subscriber_print" EntityType="Self.subscriber_print" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="subscriber_tranx" EntityType="Self.subscriber_tranx" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="address" Association="Self.address">
+            <End Role="subscriber_address" EntitySet="subscriber_address" />
+            <End Role="subscriber" EntitySet="subscriber" />
+          </AssociationSet>
+          <AssociationSet Name="epaper" Association="Self.epaper">
+            <End Role="subscriber" EntitySet="subscriber" />
+            <End Role="subscriber_epaper" EntitySet="subscriber_epaper" />
+          </AssociationSet>
+          <AssociationSet Name="print" Association="Self.print">
+            <End Role="subscriber" EntitySet="subscriber" />
+            <End Role="subscriber_print" EntitySet="subscriber_print" />
+          </AssociationSet>
+          <AssociationSet Name="tranx" Association="Self.tranx">
+            <End Role="subscriber" EntitySet="subscriber" />
+            <End Role="subscriber_tranx" EntitySet="subscriber_tranx" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -148,9 +213,10 @@
           <Property Name="addressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="cityTown" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="stateParish" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="zipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="zipCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="createdAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="subscribers" Relationship="DBModel.address" FromRole="subscriber_address" ToRole="subscriber" />
         </EntityType>
         <EntityType Name="subscriber_epaper">
           <Key>
@@ -167,6 +233,7 @@
           <Property Name="createdAt" Type="DateTime" Precision="3" />
           <Property Name="notificationEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="rateID" Type="Int32" />
+          <NavigationProperty Name="subscriber" Relationship="DBModel.epaper" FromRole="subscriber_epaper" ToRole="subscriber" />
         </EntityType>
         <EntityType Name="subscriber_print">
           <Key>
@@ -182,6 +249,7 @@
           <Property Name="deliveryInstructions" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="circprosubid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="createdAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="subscriber" Relationship="DBModel.print" FromRole="subscriber_print" ToRole="subscriber" />
         </EntityType>
         <EntityType Name="subscriber_tranx">
           <Key>
@@ -199,6 +267,7 @@
           <Property Name="tranxAmount" Type="Double" />
           <Property Name="tranxNotes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ipAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="subscriber" Relationship="DBModel.tranx" FromRole="subscriber_tranx" ToRole="subscriber" />
         </EntityType>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="printandsubrates" EntityType="Self.printandsubrate" />
@@ -207,6 +276,22 @@
           <EntitySet Name="subscriber_print" EntityType="Self.subscriber_print" />
           <EntitySet Name="subscriber_tranx" EntityType="Self.subscriber_tranx" />
           <EntitySet Name="subscribers" EntityType="DBModel.subscriber" />
+          <AssociationSet Name="address" Association="DBModel.address">
+            <End Role="subscriber_address" EntitySet="subscriber_address" />
+            <End Role="subscriber" EntitySet="subscribers" />
+          </AssociationSet>
+          <AssociationSet Name="epaper" Association="DBModel.epaper">
+            <End Role="subscriber" EntitySet="subscribers" />
+            <End Role="subscriber_epaper" EntitySet="subscriber_epaper" />
+          </AssociationSet>
+          <AssociationSet Name="print" Association="DBModel.print">
+            <End Role="subscriber" EntitySet="subscribers" />
+            <End Role="subscriber_print" EntitySet="subscriber_print" />
+          </AssociationSet>
+          <AssociationSet Name="tranx" Association="DBModel.tranx">
+            <End Role="subscriber" EntitySet="subscribers" />
+            <End Role="subscriber_tranx" EntitySet="subscriber_tranx" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="subscriber">
           <Key>
@@ -226,7 +311,60 @@
           <Property Name="phoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="newsletter" Type="Int32" />
           <Property Name="createdAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="subscriber_address" Relationship="DBModel.address" FromRole="subscriber" ToRole="subscriber_address" />
+          <NavigationProperty Name="subscriber_epaper" Relationship="DBModel.epaper" FromRole="subscriber" ToRole="subscriber_epaper" />
+          <NavigationProperty Name="subscriber_print" Relationship="DBModel.print" FromRole="subscriber" ToRole="subscriber_print" />
+          <NavigationProperty Name="subscriber_tranx" Relationship="DBModel.tranx" FromRole="subscriber" ToRole="subscriber_tranx" />
+          <Property Name="token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <Association Name="address">
+          <End Type="DBModel.subscriber_address" Role="subscriber_address" Multiplicity="0..1" />
+          <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber_address">
+              <PropertyRef Name="addressID" />
+            </Principal>
+            <Dependent Role="subscriber">
+              <PropertyRef Name="addressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="epaper">
+          <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="0..1" />
+          <End Type="DBModel.subscriber_epaper" Role="subscriber_epaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber">
+              <PropertyRef Name="subscriberID" />
+            </Principal>
+            <Dependent Role="subscriber_epaper">
+              <PropertyRef Name="subscriberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="print">
+          <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="0..1" />
+          <End Type="DBModel.subscriber_print" Role="subscriber_print" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber">
+              <PropertyRef Name="subscriberID" />
+            </Principal>
+            <Dependent Role="subscriber_print">
+              <PropertyRef Name="subscriberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tranx">
+          <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="0..1" />
+          <End Type="DBModel.subscriber_tranx" Role="subscriber_tranx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber">
+              <PropertyRef Name="subscriberID" />
+            </Principal>
+            <Dependent Role="subscriber_tranx">
+              <PropertyRef Name="subscriberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -323,6 +461,7 @@
           <EntitySetMapping Name="subscribers">
             <EntityTypeMapping TypeName="DBModel.subscriber">
               <MappingFragment StoreEntitySet="subscriber">
+                <ScalarProperty Name="token" ColumnName="token" />
                 <ScalarProperty Name="createdAt" ColumnName="createdAt" />
                 <ScalarProperty Name="newsletter" ColumnName="newsletter" />
                 <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />

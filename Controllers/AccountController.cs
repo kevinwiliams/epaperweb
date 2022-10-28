@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using ePaperWeb.Models;
 using ePaperWeb.DBModel;
-using System.Dynamic;
 
 namespace ePaperWeb.Controllers
 {
@@ -127,9 +125,10 @@ namespace ePaperWeb.Controllers
                     subscriber objSub = GetSubscriber();
                     subscriber_epaper objEp = GetEpaperDetails();
                     subscriber_print objPr = GetPrintDetails();
+                    subscriber_tranx objTran = GetTransaction();
 
                     objSub.newsletter = data.newsletterSignUp;
-
+                    objTran.rateID = data.rateID;
                     if (data.subType == "Print")
                     {
                         objPr.startDate = data.startDate;
@@ -168,8 +167,7 @@ namespace ePaperWeb.Controllers
             if (prevBtn != null)
             {
                 SubscriptionDetails sd = new SubscriptionDetails();
-                sd.rateID = objPr.rateID;
-                sd.rateID = objEp.rateID;
+
                 return View("SubscriptionInfo", sd);
             }
 
@@ -189,7 +187,8 @@ namespace ePaperWeb.Controllers
                     int subscriberID = 0;
                     int addressID = 0;
                     //TODO: better implementation
-                    int rateID = (objE.rateID > 0) ? objE.rateID : objP.rateID;
+                    //int rateID = (objE.rateID > 0) ? objE.rateID : objP.rateID;
+                    var rateID = objTran.rateID;
 
                     //save to DB
                     using (var context = new Entities())
@@ -221,7 +220,6 @@ namespace ePaperWeb.Controllers
                         var subType = context.printandsubrates.SingleOrDefault(b => b.rateid == rateID);
                         if (subType != null)
                         {
-
                             switch (subType.Type)
                             {
                                 case "Print":
@@ -258,11 +256,6 @@ namespace ePaperWeb.Controllers
                     }
 
                     RemoveSubscriber();
-
-                    
-
-
-
                     return View("PaymentSuccess");
                 }
             }

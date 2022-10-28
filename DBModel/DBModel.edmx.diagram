@@ -11,6 +11,10 @@
         <EntityTypeShape EntityType="DBModel.subscriber_print" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DBModel.subscriber_tranx" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DBModel.subscriber" Width="1.5" PointX="2.75" PointY="0.625" />
+        <AssociationConnector Association="DBModel.address" />
+        <AssociationConnector Association="DBModel.epaper" />
+        <AssociationConnector Association="DBModel.print" />
+        <AssociationConnector Association="DBModel.tranx" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
