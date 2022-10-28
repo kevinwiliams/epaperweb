@@ -24,7 +24,7 @@ namespace ePaperWeb.Filters
                 var userName = usernamePasswordArray[0];
                 var password = usernamePasswordArray[1];
 
-                // Replace this with your own system of security / means of validating credentials
+                // credentials for basic authentication pulled from web.config
                 var isValid = userName == WebConfigurationManager.AppSettings["BAUserName"] && password == WebConfigurationManager.AppSettings["BAPassWord"];
 
                 if (isValid)
@@ -46,7 +46,7 @@ namespace ePaperWeb.Filters
         private static void HandleUnathorized(HttpActionContext actionContext)
         {
             actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
-            actionContext.Response.Headers.Add("WWW-Authenticate", "Basic Scheme='Data' location = 'http://localhost:");
+            actionContext.Response.Headers.Add("WWW-Authenticate", "Basic Scheme='Data' location = 'http://localhost:44328/api/reader/'");
         }
     }
 }

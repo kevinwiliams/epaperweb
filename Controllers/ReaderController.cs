@@ -173,19 +173,5 @@ namespace ePaperWeb.Controllers
             return xml;
         }
 
-
-        public string Get()
-        {
-            return "Welcome To Web API";
-        }
-
-        [HttpPost]
-        public List<string> Get(int Id)
-        {
-            return new List<string> {
-                "Data1",
-                "Data2"
-            };
-        }
     }
 }
