@@ -13,6 +13,7 @@ using System.Data.Entity;
 using static ePaperWeb.Util;
 using System.Globalization;
 using ePaperWeb.Filters;
+using System.Web.Configuration;
 
 namespace ePaperWeb.Controllers
 {
@@ -128,14 +129,27 @@ namespace ePaperWeb.Controllers
                     mb.country = result.subscriber_address.country;
                     mb.gender = String.Empty;
                     mb.nickname = String.Empty;
-                    mb.subscription = "digital";
 
+
+                    DateTime today = DateTime.Now;
+                    DateTime endDate = result.subscriber_epaper.FirstOrDefault(x => x.isActive == 1).endDate;
+
+                    TimeSpan t =  endDate - today;
+                    double daysLeft = t.TotalDays;
+                    var subscriptionCode = "";
+
+                    //set subscription code is epaper valid
+                    if (daysLeft > 1)
+                        subscriptionCode = WebConfigurationManager.AppSettings["SubcriptionCode"];
+
+                    mb.subscription = subscriptionCode;
+                    //change date format to YYYY-MM-DD
                     var dateTime = result.subscriber_epaper.FirstOrDefault(x => x.isActive == 1).endDate.ToString();
                     DateTime dt = DateTime.ParseExact(dateTime, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
                     mb.expiration = dt.ToString("yyyy-MM-dd");
 
 
-                    //serialize class to xml string
+                    //serialize class to xml string using helper
                     xml = ObjectSerializer<member>.Serialize(mb);
                 }
             }

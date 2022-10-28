@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Web.Configuration;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
@@ -24,7 +25,7 @@ namespace ePaperWeb.Filters
                 var password = usernamePasswordArray[1];
 
                 // Replace this with your own system of security / means of validating credentials
-                var isValid = userName == "sysreader" && password == "sysP@ssW0rD";
+                var isValid = userName == WebConfigurationManager.AppSettings["BAUserName"] && password == WebConfigurationManager.AppSettings["BAPassWord"];
 
                 if (isValid)
                 {
