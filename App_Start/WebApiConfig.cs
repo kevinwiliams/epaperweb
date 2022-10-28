@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ePaperWeb.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -16,12 +17,9 @@ namespace ePaperWeb
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            //add basic authenication check
+            config.Filters.Add(new BasicAuthenticationAttribute());
 
-            config.Routes.MapHttpRoute(
-                name: "ActionApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
         }
     }
 }

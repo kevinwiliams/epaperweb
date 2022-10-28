@@ -12,9 +12,12 @@ using System.Web.Http.Description;
 using System.Data.Entity;
 using static ePaperWeb.Util;
 using System.Globalization;
+using ePaperWeb.Filters;
 
 namespace ePaperWeb.Controllers
 {
+    [BasicAuthentication]
+    [System.Web.Mvc.RequireHttps]
     public class ReaderController : ApiController
     {
         [HttpPost]
@@ -30,60 +33,66 @@ namespace ePaperWeb.Controllers
                 var errMsg = "";
                 subscriber result = new subscriber();
 
-                // Convert any HTML markup in the status text.
-                reader.call = HttpUtility.HtmlEncode(reader.call);
-                using (var context = new Entities())
+                try
                 {
+                    // Convert any HTML markup in the status text.
+                    reader.call = HttpUtility.HtmlEncode(reader.call);
 
-                    /* var result = (from s in context.subscribers
-                                   join a in context.subscriber_address on s.addressID equals a.addressID
-                                   join e in context.subscriber_epaper on s.subscriberID equals e.subscriberID
-                                   select new { subscriber = s, address = a, subscription = e})
-                                   .SingleOrDefault(b => b.subscriber.emailAddress == reader.username);*/
-                    //load data
-                    var tableData = context.subscribers
-                        .Include(x => x.subscriber_address)
-                        .Include(x => x.subscriber_epaper);
-
-                    if(tableData != null)
+                    using (var context = new Entities())
                     {
-                        switch (reader.call)
+
+                        /* var result = (from s in context.subscribers
+                                       join a in context.subscriber_address on s.addressID equals a.addressID
+                                       join e in context.subscriber_epaper on s.subscriberID equals e.subscriberID
+                                       select new { subscriber = s, address = a, subscription = e})
+                                       .SingleOrDefault(b => b.subscriber.emailAddress == reader.username);*/
+                        
+                        //load data and join via foriegn keys
+                        var tableData = context.subscribers
+                            .Include(x => x.subscriber_address)
+                            .Include(x => x.subscriber_epaper);
+
+                        if (tableData != null)
                         {
-                            case "authenticate":
-                                result = tableData.SingleOrDefault(b => b.emailAddress == reader.username && b.passwordHash == reader.password);
-                                errCode = "03";
-                                errMsg = "Invalid credentials";
-                                break;
-                            case "get_user_by_userid":
-                                result = tableData.SingleOrDefault(b => b.subscriberID == reader.userid);
-                                errCode = "04";
-                                errMsg = "User not found";
-                                break;
-                            case "get_user_by_token":
-                                result = tableData.SingleOrDefault(b => b.token == reader.token);
-                                errCode = "05";
-                                errMsg = "Invalid token";
-                                break;
-                            default:
-                                break;
+                            //check call coming from request
+                            switch (reader.call)
+                            {
+                                case "authenticate":
+                                    //encrypt password
+                                    var password = PasswordHash(reader.password);
+                                    result = tableData.SingleOrDefault(b => b.emailAddress == reader.username && b.passwordHash == password);
+                                    //pass error values if query fails
+                                    errCode = "03";
+                                    errMsg = "Invalid credentials";
+                                    break;
+                                case "get_user_by_userid":
+                                    result = tableData.SingleOrDefault(b => b.subscriberID == reader.userid);
+                                    errCode = "04";
+                                    errMsg = "User not found";
+                                    break;
+                                case "get_user_by_token":
+                                    result = tableData.SingleOrDefault(b => b.token == reader.token);
+                                    errCode = "05";
+                                    errMsg = "Invalid token";
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                    }
-                    
 
-                    //load object with database results
-                    if (result != null) {
-                        xml = MemberXML(mb, result);
-                    }
-                    else
-                    {
-                        xml = ErrorXML(errCode, errMsg);
-                    }
+                        //load object with database results
+                        xml = (result != null) ? MemberXML(mb, result) : ErrorXML(errCode, errMsg);
 
-                    return new HttpResponseMessage()
-                    {
-                        Content = new StringContent(xml, Encoding.UTF8, "application/xml"),
-                    };
+                        return new HttpResponseMessage()
+                        {
+                            Content = new StringContent(xml, Encoding.UTF8, "application/xml"),
+                        };
 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
                
             }
@@ -97,8 +106,6 @@ namespace ePaperWeb.Controllers
         public string MemberXML(member mb, subscriber result)
         {
             var xml = "";
-           
-
             try
             {
                 //load object with database results

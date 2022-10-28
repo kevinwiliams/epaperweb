@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ePaperWeb.Models;
 using ePaperWeb.DBModel;
+using static ePaperWeb.Util;
 
 namespace ePaperWeb.Controllers
 {
@@ -33,7 +34,7 @@ namespace ePaperWeb.Controllers
                     obj.firstName = data.FirstName;
                     obj.lastName = data.LastName;
                     obj.emailAddress = data.EmailAddress;
-                    obj.passwordHash = data.Password;
+                    obj.passwordHash = PasswordHash(data.Password);
                     obj.createdAt = DateTime.Now;
                     obj.ipAddress = Request.UserHostAddress;
                     return View("AddressDetails");
