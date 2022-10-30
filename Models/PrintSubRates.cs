@@ -9,6 +9,7 @@ namespace ePaperWeb.Models
     public class PrintSubRates
     {
         public List<printandsubrate> RatesList { get; set; }
+        public string rateDescr { get; set; }
         public int rateID { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace ePaperWeb.DBModel
     
         public int addressID { get; set; }
         public Nullable<int> subscriberID { get; set; }
+        public string addressType { get; set; }
         public string emailAddress { get; set; }
         public string addressLine1 { get; set; }
         public string addressLine2 { get; set; }

@@ -14,9 +14,10 @@ namespace ePaperWeb.Controllers
         // GET: Account
         public ActionResult Index()
         {
-            return View();
+            return View("LoginDetails");
         }
 
+        [AllowAnonymous]
         public ActionResult Subscribe()
         {
             //return View();
@@ -30,6 +31,14 @@ namespace ePaperWeb.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
+                    var isExist = IsEmailExist(data.EmailAddress);
+                    if (isExist)
+                    {
+                        ModelState.AddModelError("EmailExist", "Email already exist");
+                        return View(data);
+                    }
+
                     subscriber obj = GetSubscriber();
                     obj.firstName = data.FirstName;
                     obj.lastName = data.LastName;
@@ -71,7 +80,8 @@ namespace ePaperWeb.Controllers
                     objSub.phoneNumber = data.phone;
                     //add email from subscriber
                     objAdd.emailAddress = objSub.emailAddress;
-
+                    //address type M - Mailing --- B - Billing
+                    objAdd.addressType = "M";
                     objAdd.addressLine1 = data.addressLine1;
                     objAdd.addressLine2 = data.addressLine2;
                     objAdd.cityTown = data.cityTown;
@@ -80,7 +90,14 @@ namespace ePaperWeb.Controllers
                     objAdd.country = data.country;
                     objAdd.createdAt = DateTime.Now;
 
-                    return View("SubscriptionInfo");
+                    //load rates on the next (subscription) page
+                    Entities db = new Entities();
+                    SubscriptionDetails subscriptionDetails = new SubscriptionDetails();
+                    subscriptionDetails.RatesList = db.printandsubrates
+                        .Where(x => x.Market == "Local")
+                        .Where(x => x.Active == 1).ToList();
+
+                    return View("SubscriptionInfo", subscriptionDetails);
                 }
             }
             return View();
@@ -90,18 +107,13 @@ namespace ePaperWeb.Controllers
         [HttpPost]
         public ActionResult SubscriptionInfo(SubscriptionDetails data, string prevBtn, string nextBtn)
         {
-            //dynamic printSubRateModel = new ExpandoObject();
+
+            // ViewData["PrintSubRates"] = db.printandsubrates.Where(x => x.Active == 1).ToList();
             Entities db = new Entities();
-
-            PrintSubRates psr = new PrintSubRates
-            {
-                RatesList = db.printandsubrates.ToList(),
-                rateID = 0
-            };
-
-            //printSubRateModel.PrintSubRates = psr;
-            //printSubRateModel.data = data;
-
+            SubscriptionDetails subscriptionDetails = new SubscriptionDetails();
+            subscriptionDetails.RatesList = db.printandsubrates
+                .Where(x => x.Market == "Local")
+                .Where(x => x.Active == 1).ToList();
 
             if (prevBtn != null)
             {
@@ -130,23 +142,50 @@ namespace ePaperWeb.Controllers
 
                     objSub.newsletter = data.newsletterSignUp;
                     objTran.rateID = data.rateID;
-                    if (data.subType == "Print")
+
+                    var selectedPlan = subscriptionDetails.RatesList.FirstOrDefault(x => x.rateid == data.rateID).Type;
+
+                    //objTran.tranxAmount
+                    if (selectedPlan == "Print")
                     {
                         objPr.startDate = data.startDate;
                         objPr.endDate = data.endDate;
                         objPr.rateID = data.rateID;
+                        objPr.isActive = true;
                         objPr.emailAddress = objSub.emailAddress;
                         objPr.deliveryInstructions = data.deliveryInstructions;
                         objPr.createdAt = DateTime.Now;
 
                     }
-                    else
+                    if(selectedPlan == "Epaper")
                     {
                         objEp.startDate = data.startDate;
                         objEp.endDate = data.endDate;
                         objEp.rateID = data.rateID;
                         objEp.subType = data.subType;
-                        objEp.isActive = 1;
+                        objEp.isActive = true;
+                        objEp.emailAddress = objSub.emailAddress;
+                        objEp.notificationEmail = data.notificationEmail;
+                        objEp.createdAt = DateTime.Now;
+                    }
+
+                    if (selectedPlan == "Bundle")
+                    {
+                        //print subscription
+                        objPr.startDate = data.startDate;
+                        objPr.endDate = data.endDate;
+                        objPr.rateID = data.rateID;
+                        objPr.isActive = true;
+                        objPr.emailAddress = objSub.emailAddress;
+                        objPr.deliveryInstructions = data.deliveryInstructions;
+                        objPr.createdAt = DateTime.Now;
+
+                        //Epaper subscription
+                        objEp.startDate = data.startDate;
+                        objEp.endDate = data.endDate;
+                        objEp.rateID = data.rateID;
+                        objEp.subType = data.subType;
+                        objEp.isActive = true;
                         objEp.emailAddress = objSub.emailAddress;
                         objEp.notificationEmail = data.notificationEmail;
                         objEp.createdAt = DateTime.Now;
@@ -156,18 +195,30 @@ namespace ePaperWeb.Controllers
                 }
             }
             
-            return View();
+            return View(subscriptionDetails);
         }
 
 
         [HttpPost]
         public ActionResult PaymentDetails(PaymentDetails data, string prevBtn, string nextBtn)
         {
-            subscriber_epaper objEp = GetEpaperDetails();
-            subscriber_print objPr = GetPrintDetails();
+            
+            
             if (prevBtn != null)
             {
-                SubscriptionDetails sd = new SubscriptionDetails();
+                subscriber objSub = GetSubscriber();
+                subscriber_epaper objEp = GetEpaperDetails();
+                subscriber_print objPr = GetPrintDetails();
+
+                SubscriptionDetails sd = new SubscriptionDetails
+                {
+                    startDate = objEp.startDate,
+                    rateID = objEp.rateID,
+                    deliveryInstructions = objPr.deliveryInstructions,
+                    newsletterSignUp = objSub.newsletter ?? false,
+                    notificationEmail = objEp.notificationEmail,
+                    subType = objEp.subType
+                };
 
                 return View("SubscriptionInfo", sd);
             }
@@ -195,7 +246,7 @@ namespace ePaperWeb.Controllers
                     using (var context = new Entities())
                     {
                         //save subscribers
-                        objSub.isActive = 1;
+                        objSub.isActive = true;
                         context.subscribers.Add(objSub);
                         context.SaveChanges();
 
@@ -218,13 +269,14 @@ namespace ePaperWeb.Controllers
                             context.SaveChanges();
                         }
                         //save based on subscription
-                        var subType = context.printandsubrates.SingleOrDefault(b => b.rateid == rateID);
-                        if (subType != null)
+                        var selectedPlan = context.printandsubrates.SingleOrDefault(b => b.rateid == rateID);
+                        if (selectedPlan != null)
                         {
-                            switch (subType.Type)
+                            switch (selectedPlan.Type)
                             {
                                 case "Print":
                                     //save print subscription
+                                    objP.addressID = addressID;
                                     objP.subscriberID = subscriberID;
                                     context.subscriber_print.Add(objP);
                                     context.SaveChanges();
@@ -238,7 +290,18 @@ namespace ePaperWeb.Controllers
                                     break;
 
                                 case "Bundle":
+                                    //save print subscription
+                                    objP.addressID = addressID;
+                                    objP.subscriberID = subscriberID;
+                                    context.subscriber_print.Add(objP);
+
+                                    //save epaper subscription
+                                    objE.subscriberID = subscriberID;
+                                    context.subscriber_epaper.Add(objE);
+
+                                    context.SaveChanges();
                                     break;
+
                                 default:
                                     break;
                             }
@@ -247,7 +310,7 @@ namespace ePaperWeb.Controllers
                             objTran.emailAddress = objSub.emailAddress;
                             objTran.cardType = data.cardType;
                             objTran.cardOwner = data.cardOwner;
-                            objTran.tranxAmount = subType.Rate;
+                            objTran.tranxAmount = selectedPlan.Rate;
                             objTran.tranxDate = DateTime.Now;
                             objTran.subscriberID = subscriberID;
                             objTran.ipAddress = Request.UserHostAddress;

@@ -37,12 +37,14 @@
           <Property Name="secretquestion" Type="varchar" MaxLength="100" />
           <Property Name="secretans" Type="varchar" MaxLength="50" />
           <Property Name="ipAddress" Type="varchar" MaxLength="50" />
-          <Property Name="isActive" Type="int" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="addressID" Type="int" />
           <Property Name="phoneNumber" Type="varchar" MaxLength="50" />
-          <Property Name="newsletter" Type="int" />
+          <Property Name="newsletter" Type="bit" />
           <Property Name="createdAt" Type="datetime" Nullable="false" />
           <Property Name="token" Type="varchar" MaxLength="50" />
+          <Property Name="ccHashID" Type="int" />
+          <Property Name="lastLogin" Type="datetime" />
         </EntityType>
         <EntityType Name="subscriber_address">
           <Key>
@@ -50,6 +52,7 @@
           </Key>
           <Property Name="addressID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="subscriberID" Type="int" />
+          <Property Name="addressType" Type="varchar" MaxLength="2" />
           <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="addressLine1" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="addressLine2" Type="varchar" MaxLength="50" />
@@ -70,7 +73,7 @@
           <Property Name="rateID" Type="int" Nullable="false" />
           <Property Name="startDate" Type="datetime" Nullable="false" />
           <Property Name="endDate" Type="datetime" Nullable="false" />
-          <Property Name="isActive" Type="int" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="subType" Type="varchar" MaxLength="50" />
           <Property Name="createdAt" Type="datetime" Nullable="false" />
           <Property Name="notificationEmail" Type="varchar" MaxLength="50" />
@@ -86,6 +89,7 @@
           <Property Name="addressID" Type="int" Nullable="false" />
           <Property Name="startDate" Type="datetime" Nullable="false" />
           <Property Name="endDate" Type="datetime" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="deliveryInstructions" Type="varchar" MaxLength="200" />
           <Property Name="circprosubid" Type="varchar" MaxLength="50" />
           <Property Name="createdAt" Type="datetime" Nullable="false" />
@@ -98,7 +102,9 @@
           <Property Name="subscriberID" Type="int" />
           <Property Name="emailAddress" Type="varchar" MaxLength="50" />
           <Property Name="cardOwner" Type="varchar" MaxLength="50" />
-          <Property Name="cardType" Type="varchar" MaxLength="50" />
+          <Property Name="cardType" Type="varchar" MaxLength="20" />
+          <Property Name="cardExp" Type="varchar" MaxLength="10" />
+          <Property Name="cardLastFour" Type="varchar" MaxLength="10" />
           <Property Name="tranxDate" Type="datetime" />
           <Property Name="rateID" Type="int" />
           <Property Name="tranxType" Type="varchar" MaxLength="50" />
@@ -239,16 +245,18 @@
           <Property Name="secretquestion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="secretans" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ipAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="isActive" Type="Int32" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="addressID" Type="Int32" />
           <Property Name="phoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="newsletter" Type="Int32" />
+          <Property Name="newsletter" Type="Boolean" />
           <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ccHashID" Type="Int32" />
           <NavigationProperty Name="subscriber_address" Relationship="DBModel.address" FromRole="subscriber" ToRole="subscriber_address" />
           <NavigationProperty Name="subscriber_epaper" Relationship="DBModel.epaper" FromRole="subscriber" ToRole="subscriber_epaper" />
           <NavigationProperty Name="subscriber_print" Relationship="DBModel.print" FromRole="subscriber" ToRole="subscriber_print" />
           <NavigationProperty Name="subscriber_tranx" Relationship="DBModel.tranx" FromRole="subscriber" ToRole="subscriber_tranx" />
+          <Property Name="lastLogin" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="subscriber_address">
           <Key>
@@ -256,6 +264,7 @@
           </Key>
           <Property Name="addressID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="subscriberID" Type="Int32" />
+          <Property Name="addressType" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="emailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="addressLine1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="addressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -277,7 +286,7 @@
           <Property Name="rateID" Type="Int32" Nullable="false" />
           <Property Name="startDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="endDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="isActive" Type="Int32" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="subType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="notificationEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -294,6 +303,7 @@
           <Property Name="addressID" Type="Int32" Nullable="false" />
           <Property Name="startDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="endDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="deliveryInstructions" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="circprosubid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
@@ -307,7 +317,9 @@
           <Property Name="subscriberID" Type="Int32" />
           <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="cardOwner" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cardType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cardType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cardExp" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cardLastFour" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="tranxDate" Type="DateTime" Precision="3" />
           <Property Name="rateID" Type="Int32" />
           <Property Name="tranxType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -394,6 +406,8 @@
           <EntitySetMapping Name="subscribers">
             <EntityTypeMapping TypeName="DBModel.subscriber">
               <MappingFragment StoreEntitySet="subscriber">
+                <ScalarProperty Name="lastLogin" ColumnName="lastLogin" />
+                <ScalarProperty Name="ccHashID" ColumnName="ccHashID" />
                 <ScalarProperty Name="token" ColumnName="token" />
                 <ScalarProperty Name="createdAt" ColumnName="createdAt" />
                 <ScalarProperty Name="newsletter" ColumnName="newsletter" />
@@ -423,6 +437,7 @@
                 <ScalarProperty Name="addressLine2" ColumnName="addressLine2" />
                 <ScalarProperty Name="addressLine1" ColumnName="addressLine1" />
                 <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="addressType" ColumnName="addressType" />
                 <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
                 <ScalarProperty Name="addressID" ColumnName="addressID" />
               </MappingFragment>
@@ -451,6 +466,7 @@
                 <ScalarProperty Name="createdAt" ColumnName="createdAt" />
                 <ScalarProperty Name="circprosubid" ColumnName="circprosubid" />
                 <ScalarProperty Name="deliveryInstructions" ColumnName="deliveryInstructions" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="endDate" ColumnName="endDate" />
                 <ScalarProperty Name="startDate" ColumnName="startDate" />
                 <ScalarProperty Name="addressID" ColumnName="addressID" />
@@ -471,6 +487,8 @@
                 <ScalarProperty Name="tranxType" ColumnName="tranxType" />
                 <ScalarProperty Name="rateID" ColumnName="rateID" />
                 <ScalarProperty Name="tranxDate" ColumnName="tranxDate" />
+                <ScalarProperty Name="cardLastFour" ColumnName="cardLastFour" />
+                <ScalarProperty Name="cardExp" ColumnName="cardExp" />
                 <ScalarProperty Name="cardType" ColumnName="cardType" />
                 <ScalarProperty Name="cardOwner" ColumnName="cardOwner" />
                 <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />

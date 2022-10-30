@@ -21,6 +21,7 @@ namespace ePaperWeb.DBModel
         public int addressID { get; set; }
         public System.DateTime startDate { get; set; }
         public System.DateTime endDate { get; set; }
+        public bool isActive { get; set; }
         public string deliveryInstructions { get; set; }
         public string circprosubid { get; set; }
         public System.DateTime createdAt { get; set; }

@@ -31,12 +31,14 @@ namespace ePaperWeb.DBModel
         public string secretquestion { get; set; }
         public string secretans { get; set; }
         public string ipAddress { get; set; }
-        public int isActive { get; set; }
+        public bool isActive { get; set; }
         public Nullable<int> addressID { get; set; }
         public string phoneNumber { get; set; }
-        public Nullable<int> newsletter { get; set; }
+        public Nullable<bool> newsletter { get; set; }
         public System.DateTime createdAt { get; set; }
         public string token { get; set; }
+        public Nullable<int> ccHashID { get; set; }
+        public Nullable<System.DateTime> lastLogin { get; set; }
     
         public virtual subscriber_address subscriber_address { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -26,13 +26,23 @@ namespace ePaperWeb.Models
         public string deliveryInstructions { get; set; }
 
         [Display(Name = "Newsletter")]
-        public int newsletterSignUp { get; set; }
+        public bool newsletterSignUp { get; set; }
 
+        
         [Display(Name = "Terms & Conditions")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Please select terms and conditions")]
-        public int termsAndCon { get; set; }
+        //[Range(typeof(bool), "true", "true", ErrorMessage = "Please select terms and conditions")]
+        [MustBeTrue(ErrorMessage = "Please select terms and conditions!")]
+        public bool termsAndCon { get; set; }
 
-        public List<printandsubrate> RatesList { get; set; }
+        public IEnumerable<printandsubrate> RatesList { get; set; }
 
+    }
+
+    public class MustBeTrueAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            return value is bool && (bool)value;
+        }
     }
 }

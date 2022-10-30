@@ -19,6 +19,8 @@ namespace ePaperWeb.DBModel
         public string emailAddress { get; set; }
         public string cardOwner { get; set; }
         public string cardType { get; set; }
+        public string cardExp { get; set; }
+        public string cardLastFour { get; set; }
         public Nullable<System.DateTime> tranxDate { get; set; }
         public Nullable<int> rateID { get; set; }
         public string tranxType { get; set; }

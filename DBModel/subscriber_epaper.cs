@@ -21,7 +21,7 @@ namespace ePaperWeb.DBModel
         public int rateID { get; set; }
         public System.DateTime startDate { get; set; }
         public System.DateTime endDate { get; set; }
-        public int isActive { get; set; }
+        public bool isActive { get; set; }
         public string subType { get; set; }
         public System.DateTime createdAt { get; set; }
         public string notificationEmail { get; set; }
