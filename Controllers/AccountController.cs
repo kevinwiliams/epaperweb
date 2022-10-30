@@ -143,13 +143,12 @@ namespace ePaperWeb.Controllers
                     objSub.newsletter = data.newsletterSignUp;
                     objTran.rateID = data.rateID;
 
-                    var selectedPlan = subscriptionDetails.RatesList.FirstOrDefault(x => x.rateid == data.rateID).Type;
+                    var selectedPlan = subscriptionDetails.RatesList.FirstOrDefault(x => x.rateid == data.rateID);
 
-                    //objTran.tranxAmount
-                    if (selectedPlan == "Print")
+                    if (selectedPlan.Type == "Print")
                     {
                         objPr.startDate = data.startDate;
-                        objPr.endDate = data.endDate;
+                        objPr.endDate = data.startDate.AddDays(30);
                         objPr.rateID = data.rateID;
                         objPr.isActive = true;
                         objPr.emailAddress = objSub.emailAddress;
@@ -157,10 +156,10 @@ namespace ePaperWeb.Controllers
                         objPr.createdAt = DateTime.Now;
 
                     }
-                    if(selectedPlan == "Epaper")
+                    if (selectedPlan.Type == "Epaper")
                     {
                         objEp.startDate = data.startDate;
-                        objEp.endDate = data.endDate;
+                        objEp.endDate = data.startDate.AddDays((double)selectedPlan.ETerm);
                         objEp.rateID = data.rateID;
                         objEp.subType = data.subType;
                         objEp.isActive = true;
@@ -168,12 +167,11 @@ namespace ePaperWeb.Controllers
                         objEp.notificationEmail = data.notificationEmail;
                         objEp.createdAt = DateTime.Now;
                     }
-
-                    if (selectedPlan == "Bundle")
+                    if (selectedPlan.Type == "Bundle")
                     {
                         //print subscription
                         objPr.startDate = data.startDate;
-                        objPr.endDate = data.endDate;
+                        objPr.endDate = data.startDate.AddDays(30);
                         objPr.rateID = data.rateID;
                         objPr.isActive = true;
                         objPr.emailAddress = objSub.emailAddress;
@@ -182,7 +180,7 @@ namespace ePaperWeb.Controllers
 
                         //Epaper subscription
                         objEp.startDate = data.startDate;
-                        objEp.endDate = data.endDate;
+                        objEp.endDate = data.startDate.AddDays((double)selectedPlan.ETerm);
                         objEp.rateID = data.rateID;
                         objEp.subType = data.subType;
                         objEp.isActive = true;

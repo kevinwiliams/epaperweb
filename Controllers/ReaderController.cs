@@ -42,12 +42,11 @@ namespace ePaperWeb.Controllers
                     using (var context = new Entities())
                     {
 
-                        /* var result = (from s in context.subscribers
+                        /* var tableData = (from s in context.subscribers
                                        join a in context.subscriber_address on s.addressID equals a.addressID
                                        join e in context.subscriber_epaper on s.subscriberID equals e.subscriberID
-                                       select new { subscriber = s, address = a, subscription = e})
-                                       .SingleOrDefault(b => b.subscriber.emailAddress == reader.username);*/
-                        
+                                       select new { subscriber = s, address = a, subscription = e});*/
+
                         //load data and join via foriegn keys
                         var tableData = context.subscribers
                             .Include(x => x.subscriber_address)
