@@ -61,18 +61,20 @@ namespace ePaperWeb.Controllers
                                 case "authenticate":
                                     //encrypt password
                                     var password = PasswordHash(reader.password);
-                                    result = tableData.SingleOrDefault(b => b.emailAddress == reader.username && b.passwordHash == password);
+                                    result = tableData.SingleOrDefault(b => b.emailAddress == reader.username && b.passwordHash == password && b.isActive == true);
                                     //pass error values if query fails
                                     errCode = "03";
                                     errMsg = "Invalid credentials";
                                     break;
                                 case "get_user_by_userid":
-                                    result = tableData.SingleOrDefault(b => b.subscriberID == reader.userid);
+                                    result = tableData.SingleOrDefault(b => b.subscriberID == reader.userid && b.isActive == true);
+                                    //pass error values if query fails
                                     errCode = "04";
                                     errMsg = "User not found";
                                     break;
                                 case "get_user_by_token":
-                                    result = tableData.SingleOrDefault(b => b.token == reader.token);
+                                    result = tableData.SingleOrDefault(b => b.token == reader.token && b.isActive == true);
+                                    //pass error values if query fails
                                     errCode = "05";
                                     errMsg = "Invalid token";
                                     break;
@@ -132,7 +134,7 @@ namespace ePaperWeb.Controllers
 
 
                     DateTime today = DateTime.Now;
-                    DateTime endDate = result.subscriber_epaper.FirstOrDefault(x => x.isActive == 1).endDate;
+                    DateTime endDate = result.subscriber_epaper.FirstOrDefault(x => x.isActive == true).endDate;
 
                     TimeSpan t =  endDate - today;
                     double daysLeft = t.TotalDays;
@@ -144,7 +146,7 @@ namespace ePaperWeb.Controllers
 
                     mb.subscription = subscriptionCode;
                     //change date format to YYYY-MM-DD
-                    var dateTime = result.subscriber_epaper.FirstOrDefault(x => x.isActive == 1).endDate.ToString();
+                    var dateTime = result.subscriber_epaper.FirstOrDefault(x => x.isActive == true).endDate.ToString();
                     DateTime dt = DateTime.ParseExact(dateTime, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
                     mb.expiration = dt.ToString("yyyy-MM-dd");
 
