@@ -38,20 +38,20 @@
                         <div class="form-horizontal">
                             <h4>PaymentDetails</h4>
                             <hr />
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.rateID, htmlAttributes: new { @class = "control-label " })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.rateID, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.rateID, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.rateID, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.cardOwner, htmlAttributes: new { @class = "control-label " })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.cardOwner, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.cardOwner, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.cardOwner, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -59,7 +59,7 @@
                                 @Html.LabelFor(model => model.cardType, htmlAttributes: new { @class = "control-label " })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.cardType, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.cardType, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.cardType, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -67,7 +67,7 @@
                                 @Html.LabelFor(model => model.cardNumber, htmlAttributes: new { @class = "control-label " })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.cardNumber, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.cardNumber, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.cardNumber, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -75,7 +75,7 @@
                                 @Html.LabelFor(model => model.cardCVV, htmlAttributes: new { @class = "control-label " })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.cardCVV, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.cardCVV, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.cardCVV, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -83,7 +83,7 @@
                                 @Html.LabelFor(model => model.cardExp, htmlAttributes: new { @class = "control-label " })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.cardExp, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.cardExp, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.cardExp, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -93,10 +93,10 @@
                                 <div class="col-md-offset-2 col-md-10 pt-3">
                                     <div class="row">
                                         <div class="col-6">
-                                            <input type="submit" value="Prev" name="prevBtn" class="btn btn-outline-primary bx-pull-left" />
+                                            <input type="submit" value="Prev" name="prevBtn" class="btn btn-sign-in bx-pull-left" />
                                         </div>
                                         <div class="col-6">
-                                            <input type="submit" value="Pay Now" name="nextBtn" class="btn btn-outline-primary bx-pull-right" />
+                                            <input type="submit" value="Pay Now" name="nextBtn" class="btn btn-sign-in bx-pull-right" />
                                         </div>
                                     </div>
                                 </div>

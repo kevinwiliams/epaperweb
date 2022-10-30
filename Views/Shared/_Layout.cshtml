@@ -159,5 +159,51 @@
     @Scripts.Render("~/bundles/js")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        $(function () {
+            $("#startDate").datetimepicker({
+                format: "MM/DD/YYYY"
+            }).on('dp.change', function (e) {
+                $(this).data('DateTimePicker').hide();
+            });
+        });
+    </script>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })();
+
+    </script>
+    <script>
+        // extend range validator method to treat checkboxes differently
+        var defaultRangeValidator = $.validator.methods.range;
+        $.validator.methods.range = function (value, element, param) {
+            if (element.type === 'checkbox') {
+                // if it's a checkbox return true if it is checked
+                return element.checked;
+            } else {
+                // otherwise run the default validation function
+                return defaultRangeValidator.call(this, value, element, param);
+            }
+        }
+    </script>
+
 </body>
 </html>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ePaperWeb.Models;
 using ePaperWeb.DBModel;
 using static ePaperWeb.Util;
+using System.Globalization;
 
 namespace ePaperWeb.Controllers
 {
@@ -27,6 +28,7 @@ namespace ePaperWeb.Controllers
         [HttpPost]
         public ActionResult LoginDetails(LoginDetails data, string prevBtn, string nextBtn)
         {
+
             if (nextBtn != null)
             {
                 if (ModelState.IsValid)
@@ -35,7 +37,7 @@ namespace ePaperWeb.Controllers
                     var isExist = IsEmailExist(data.EmailAddress);
                     if (isExist)
                     {
-                        ModelState.AddModelError("EmailExist", "Email already exist");
+                        ModelState.AddModelError("EmailExist", "Email address is already assigned. Please use forget password option to log in");
                         return View(data);
                     }
 
@@ -76,7 +78,10 @@ namespace ePaperWeb.Controllers
                 {
                     subscriber objSub = GetSubscriber();
                     subscriber_address objAdd = GetSubscriberAddress();
+                    UserLocation objLoc = GetSubscriberLocation();
 
+                    var market = (objLoc.Country_Code == "JM") ? "Local" : "International";
+                    
                     objSub.phoneNumber = data.phone;
                     //add email from subscriber
                     objAdd.emailAddress = objSub.emailAddress;
@@ -93,8 +98,10 @@ namespace ePaperWeb.Controllers
                     //load rates on the next (subscription) page
                     Entities db = new Entities();
                     SubscriptionDetails subscriptionDetails = new SubscriptionDetails();
+                    subscriptionDetails.startDate = DateTime.Now;
+                    subscriptionDetails.endDate = DateTime.Now.AddDays(30);
                     subscriptionDetails.RatesList = db.printandsubrates
-                        .Where(x => x.Market == "Local")
+                        .Where(x => x.Market == market)
                         .Where(x => x.Active == 1).ToList();
 
                     return View("SubscriptionInfo", subscriptionDetails);
@@ -107,12 +114,15 @@ namespace ePaperWeb.Controllers
         [HttpPost]
         public ActionResult SubscriptionInfo(SubscriptionDetails data, string prevBtn, string nextBtn)
         {
+            UserLocation objLoc = GetSubscriberLocation();
+            var market = (objLoc.Country_Code == "JM") ? "Local" : "International";
 
             // ViewData["PrintSubRates"] = db.printandsubrates.Where(x => x.Active == 1).ToList();
             Entities db = new Entities();
             SubscriptionDetails subscriptionDetails = new SubscriptionDetails();
+            subscriptionDetails.startDate = DateTime.Now;
             subscriptionDetails.RatesList = db.printandsubrates
-                .Where(x => x.Market == "Local")
+                .Where(x => x.Market == market) //TODO: Add Method to check location4
                 .Where(x => x.Active == 1).ToList();
 
             if (prevBtn != null)
@@ -204,9 +214,13 @@ namespace ePaperWeb.Controllers
             
             if (prevBtn != null)
             {
+                Entities db = new Entities();
                 subscriber objSub = GetSubscriber();
                 subscriber_epaper objEp = GetEpaperDetails();
                 subscriber_print objPr = GetPrintDetails();
+                UserLocation objLoc = GetSubscriberLocation();
+                var market = (objLoc.Country_Code == "JM") ? "Local" : "International";
+
 
                 SubscriptionDetails sd = new SubscriptionDetails
                 {
@@ -215,8 +229,9 @@ namespace ePaperWeb.Controllers
                     deliveryInstructions = objPr.deliveryInstructions,
                     newsletterSignUp = objSub.newsletter ?? false,
                     notificationEmail = objEp.notificationEmail,
-                    subType = objEp.subType
-                };
+                    subType = objEp.subType,
+                    RatesList = db.printandsubrates.Where(x => x.Market == market).Where(x => x.Active == 1).ToList()
+            };
 
                 return View("SubscriptionInfo", sd);
             }
@@ -386,6 +401,15 @@ namespace ePaperWeb.Controllers
                 Session["subscriber_tranx"] = new subscriber_tranx();
             }
             return (subscriber_tranx)Session["subscriber_tranx"];
+        }
+
+        private UserLocation GetSubscriberLocation()
+        {
+            if (Session["subscriber_location"] == null)
+            {
+                Session["subscriber_location"] = new UserLocation();
+            }
+            return (UserLocation)Session["subscriber_location"];
         }
 
         private void RemoveSubscriber()

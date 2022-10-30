@@ -9,7 +9,8 @@ namespace ePaperWeb
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new Bundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/moment.min.js"));
 
             bundles.Add(new Bundle("~/bundles/jqueryval").Include(
                       "~/Scripts/jquery.validate.min.js",
@@ -21,7 +22,8 @@ namespace ePaperWeb
             //            "~/Scripts/modernizr-*"));
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap-datetimepicker.min.js"));
 
             bundles.Add(new Bundle("~/bundles/js").Include(
                       "~/assets/vendor/aos/aos.js",
@@ -34,7 +36,8 @@ namespace ePaperWeb
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                      "~/Content/bootstrap.css",
                      "~/Content/Site.css",
-                     "~/assets/css/style.css"));
+                     "~/assets/css/style.css",
+                     "~/Content/bootstrap-datetimepicker.min.css"));
         }
     }
 }
