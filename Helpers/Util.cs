@@ -4,6 +4,9 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.Web.Mvc;
+using System.Linq;
 
 namespace ePaperWeb
 {
@@ -31,6 +34,12 @@ namespace ePaperWeb
                     }
                 }
             }
+        }
+
+        public static IEnumerable<SelectListItem> GetEnumSelectList<T>()
+        {
+            return (Enum.GetValues(typeof(T)).Cast<T>().Select(
+                enu => new SelectListItem() { Text = enu.ToString(), Value = enu.ToString() })).ToList();
         }
 
         public static bool IsLocaIP(string host)

@@ -199,12 +199,8 @@ namespace ePaperWeb.Controllers
                         objEp.createdAt = DateTime.Now;
                     }
 
-                    PaymentDetails PaymentDetails = new PaymentDetails();
-                    PaymentDetails.PaymentMethodData = new List<PaymentMethodData>();
-                    PaymentDetails.PaymentMethodData.Add(new PaymentMethodData { Id = "VISA", Value = "Visa" });
-                    PaymentDetails.PaymentMethodData.Add(new PaymentMethodData { Id = "MASTERCARD", Value = "Mastercard" });
-
-                    return View("PaymentDetails", PaymentDetails);
+               
+                    return View("PaymentDetails");
                 }
             }
             
@@ -215,8 +211,9 @@ namespace ePaperWeb.Controllers
         [HttpPost]
         public ActionResult PaymentDetails(PaymentDetails data, string prevBtn, string nextBtn)
         {
-            
-            
+
+            var cardType = data.cardType;
+
             if (prevBtn != null)
             {
                 Entities db = new Entities();
@@ -241,8 +238,6 @@ namespace ePaperWeb.Controllers
                 return View("SubscriptionInfo", sd);
             }
 
-            
-
             if (nextBtn != null)
             {
                 if (ModelState.IsValid)
@@ -259,6 +254,7 @@ namespace ePaperWeb.Controllers
                     //TODO: better implementation
                     //int rateID = (objE.rateID > 0) ? objE.rateID : objP.rateID;
                     var rateID = objTran.rateID;
+                    
 
                     //save to DB
                     using (var context = new Entities())
@@ -341,7 +337,6 @@ namespace ePaperWeb.Controllers
                     return View("PaymentSuccess");
                 }
             }
-
 
             return View();
         }
