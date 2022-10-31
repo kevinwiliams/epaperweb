@@ -41,7 +41,6 @@
                             <hr />
                             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-
                             @foreach (var plans in Model.RatesList)
                             {
                                 @Html.RadioButtonFor(model => model.rateID, plans.rateid)
@@ -58,19 +57,18 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="input-group date" id="datepicker">
-                                <input type="text" class="form-control" id="date" />
-                                <span class="input-group-append">
-                                    <span class="input-group-text bg-light d-block">
-                                        <i class="fa fa-calendar"></i>
-                                    </span>
-                                </span>
-                            </div> -->
                             <div class="form-group">
                                 @Html.LabelFor(model => model.startDate, htmlAttributes: new { @class = "control-label " })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.startDate, new { htmlAttributes = new { @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.startDate, "", new { @class = "text-danger" })*@
+                                    @Html.EditorFor(model => model.startDate, "{0:MM/dd/yyyy}", new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @class = "form-control",
+                                            maxlength = 10
+                                        }
+                                    })
+                                   
                                 </div>
                             </div>
 
@@ -78,7 +76,6 @@
                                 @Html.LabelFor(model => model.notificationEmail, htmlAttributes: new { @class = "control-label " })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.notificationEmail, new { htmlAttributes = new { @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.notificationEmail, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -86,7 +83,6 @@
                                 @Html.LabelFor(model => model.deliveryInstructions, htmlAttributes: new { @class = "control-label " })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.deliveryInstructions, new { htmlAttributes = new { @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.deliveryInstructions, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -106,7 +102,6 @@
                                     <div class="form-check">
                                         @Html.EditorFor(model => model.termsAndCon, new { htmlAttributes = new { @class = "form-check-input", @required = "required" } })
                                         @Html.LabelFor(model => model.termsAndCon, htmlAttributes: new { @class = "form-check-label" })<br />
-                                        @*@Html.ValidationMessageFor(model => model.termsAndCon, "", new { @class = "text-danger" })*@
                                     </div>
                                 </div>
                             </div>

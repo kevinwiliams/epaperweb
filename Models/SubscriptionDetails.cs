@@ -15,7 +15,7 @@ namespace ePaperWeb.Models
 
         [Display(Name = "Subscription Start Date")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please select a start date")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }

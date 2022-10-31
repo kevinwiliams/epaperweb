@@ -22,8 +22,7 @@ namespace ePaperWeb
             //            "~/Scripts/modernizr-*"));
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/bootstrap-datetimepicker.min.js"));
+                      "~/Scripts/bootstrap.js"));
 
             bundles.Add(new Bundle("~/bundles/js").Include(
                       "~/assets/vendor/aos/aos.js",
@@ -36,8 +35,7 @@ namespace ePaperWeb
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                      "~/Content/bootstrap.css",
                      "~/Content/Site.css",
-                     "~/assets/css/style.css",
-                     "~/Content/bootstrap-datetimepicker.min.css"));
+                     "~/assets/css/style.css"));
         }
     }
 }

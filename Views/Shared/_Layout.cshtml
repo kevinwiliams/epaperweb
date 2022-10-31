@@ -160,15 +160,6 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
-    <script type="text/javascript">
-        $(function () {
-            $("#startDate").datetimepicker({
-                format: "MM/DD/YYYY"
-            }).on('dp.change', function (e) {
-                $(this).data('DateTimePicker').hide();
-            });
-        });
-    </script>
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (() => {

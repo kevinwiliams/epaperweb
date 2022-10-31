@@ -28,8 +28,7 @@ namespace ePaperWeb.Controllers
         [HttpPost]
         public ActionResult LoginDetails(LoginDetails data, string prevBtn, string nextBtn)
         {
-
-            if (nextBtn != null)
+           if (nextBtn != null)
             {
                 if (ModelState.IsValid)
                 {
@@ -97,12 +96,15 @@ namespace ePaperWeb.Controllers
 
                     //load rates on the next (subscription) page
                     Entities db = new Entities();
-                    SubscriptionDetails subscriptionDetails = new SubscriptionDetails();
-                    subscriptionDetails.startDate = DateTime.Now;
-                    subscriptionDetails.endDate = DateTime.Now.AddDays(30);
-                    subscriptionDetails.RatesList = db.printandsubrates
-                        .Where(x => x.Market == market)
-                        .Where(x => x.Active == 1).ToList();
+                    SubscriptionDetails subscriptionDetails = new SubscriptionDetails 
+                    {
+                        startDate = DateTime.Now,
+                        endDate = DateTime.Now.AddDays(30),
+                        RatesList = db.printandsubrates
+                            .Where(x => x.Market == market)
+                            .Where(x => x.Active == 1).ToList(),
+                    };
+                    
 
                     return View("SubscriptionInfo", subscriptionDetails);
                 }
@@ -114,16 +116,7 @@ namespace ePaperWeb.Controllers
         [HttpPost]
         public ActionResult SubscriptionInfo(SubscriptionDetails data, string prevBtn, string nextBtn)
         {
-            UserLocation objLoc = GetSubscriberLocation();
-            var market = (objLoc.Country_Code == "JM") ? "Local" : "International";
-
-            // ViewData["PrintSubRates"] = db.printandsubrates.Where(x => x.Active == 1).ToList();
             Entities db = new Entities();
-            SubscriptionDetails subscriptionDetails = new SubscriptionDetails();
-            subscriptionDetails.startDate = DateTime.Now;
-            subscriptionDetails.RatesList = db.printandsubrates
-                .Where(x => x.Market == market) //TODO: Add Method to check location4
-                .Where(x => x.Active == 1).ToList();
 
             if (prevBtn != null)
             {
@@ -153,7 +146,7 @@ namespace ePaperWeb.Controllers
                     objSub.newsletter = data.newsletterSignUp;
                     objTran.rateID = data.rateID;
 
-                    var selectedPlan = subscriptionDetails.RatesList.FirstOrDefault(x => x.rateid == data.rateID);
+                    var selectedPlan = db.printandsubrates.FirstOrDefault(x => x.rateid == data.rateID);
 
                     if (selectedPlan.Type == "Print")
                     {
@@ -203,7 +196,20 @@ namespace ePaperWeb.Controllers
                     return View("PaymentDetails");
                 }
             }
+
+            UserLocation objLoc = GetSubscriberLocation();
+            var market = (objLoc.Country_Code == "JM") ? "Local" : "International";
             
+            SubscriptionDetails subscriptionDetails = new SubscriptionDetails 
+            {
+                startDate = DateTime.Now,
+                RatesList = db.printandsubrates
+                                .Where(x => x.Market == market)
+                                .Where(x => x.Active == 1).ToList(),
+
+            };
+            
+
             return View(subscriptionDetails);
         }
 
@@ -251,10 +257,7 @@ namespace ePaperWeb.Controllers
 
                     int subscriberID = 0;
                     int addressID = 0;
-                    //TODO: better implementation
-                    //int rateID = (objE.rateID > 0) ? objE.rateID : objP.rateID;
                     var rateID = objTran.rateID;
-                    
 
                     //save to DB
                     using (var context = new Entities())

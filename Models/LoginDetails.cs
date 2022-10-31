@@ -10,6 +10,7 @@ namespace ePaperWeb.Models
     {
 
         [Display(Name = "First Name")]
+        [MinLength(2)]
         [Required(AllowEmptyStrings = false, ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
 
