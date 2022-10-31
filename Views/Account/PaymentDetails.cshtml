@@ -49,12 +49,13 @@
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.cardType, htmlAttributes: new { @class = "control-label " }) <br />
-
                                 @foreach (var method in @ePaperWeb.Util.GetEnumSelectList<ePaperWeb.Models.PaymentMethod>())
                                 {
-                                    @Html.RadioButtonFor(model => model.cardType, method.Text, new { @checked = true })
-                                    @(" " + method.Text)
-                                    <br />
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(model => model.cardType, method.Text, new { @class = "form-check-input", @checked = true })
+                                        @Html.LabelFor(model => model.cardType, method.Text, htmlAttributes: new { @class = "form-check-label " })
+                                    </div>
+
                                 }
                                 @Html.HiddenFor(m => m.cardType)
 
