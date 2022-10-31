@@ -52,7 +52,7 @@
                                 @foreach (var method in @ePaperWeb.Util.GetEnumSelectList<ePaperWeb.Models.PaymentMethod>())
                                 {
                                     <div class="form-check form-check-inline">
-                                        @Html.RadioButtonFor(model => model.cardType, method.Text, new { @class = "form-check-input", @checked = true })
+                                        @Html.RadioButtonFor(model => model.cardType, method.Text, new { @class = "form-check-input", @required = "required" })
                                         @Html.LabelFor(model => model.cardType, method.Text, htmlAttributes: new { @class = "form-check-label " })
                                     </div>
 
