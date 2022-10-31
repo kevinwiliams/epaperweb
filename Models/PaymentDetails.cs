@@ -31,7 +31,14 @@ namespace ePaperWeb.Models
         [Required]
         public int rateID;
 
-      
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please select a card type")]
+        public List<PaymentMethodData> PaymentMethodData { get; set; }
 
+    }
+
+    public class PaymentMethodData
+    {
+        public string Id { get; set; }
+        public string Value { get; set; }
     }
 }

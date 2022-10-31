@@ -199,7 +199,12 @@ namespace ePaperWeb.Controllers
                         objEp.createdAt = DateTime.Now;
                     }
 
-                    return View("PaymentDetails");
+                    PaymentDetails PaymentDetails = new PaymentDetails();
+                    PaymentDetails.PaymentMethodData = new List<PaymentMethodData>();
+                    PaymentDetails.PaymentMethodData.Add(new PaymentMethodData { Id = "VISA", Value = "Visa" });
+                    PaymentDetails.PaymentMethodData.Add(new PaymentMethodData { Id = "MASTERCARD", Value = "Mastercard" });
+
+                    return View("PaymentDetails", PaymentDetails);
                 }
             }
             
