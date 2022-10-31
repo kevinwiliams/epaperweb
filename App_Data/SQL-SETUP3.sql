@@ -25,6 +25,7 @@ CREATE TABLE [dbo].[subscriber](
 	[createdAt] [datetime] NOT NULL,
 	[token] [varchar](50) NULL,
 	[ccHashID] [int] NULL,
+	[lastLogin] [datetime] NULL,
  CONSTRAINT [PK_subscriber] PRIMARY KEY CLUSTERED 
 (
 	[subscriberID] ASC
