@@ -21,8 +21,14 @@ namespace ePaperWeb.Controllers
         [AllowAnonymous]
         public ActionResult Subscribe()
         {
-            //return View();
-            return View("LoginDetails");
+            //Test Data
+            LoginDetails ld = new LoginDetails
+            {
+                FirstName = "Dwayne",
+                LastName = "Mendez",
+                EmailAddress = "dwayne.mendez@live.net",
+            };
+            return View("LoginDetails", ld);
         }
 
         [HttpPost]
@@ -47,7 +53,19 @@ namespace ePaperWeb.Controllers
                     obj.passwordHash = PasswordHash(data.Password);
                     obj.createdAt = DateTime.Now;
                     obj.ipAddress = Request.UserHostAddress;
-                    return View("AddressDetails");
+
+                    //Test Data
+                    AddressDetails ad = new AddressDetails
+                    {
+                        addressLine1 = "Lot 876 Scheme Steet",
+                        cityTown = "Bay Town",
+                        stateParish = "Portland",
+                        country = "Jamaica",
+                        zipCode = "JAMWI",
+                        phone = "876-875-8651"
+                    };
+
+                    return View("AddressDetails", ad);
                 }
             }
             return View();
@@ -192,8 +210,13 @@ namespace ePaperWeb.Controllers
                         objEp.createdAt = DateTime.Now;
                     }
 
-               
-                    return View("PaymentDetails");
+                    //Test Data
+                    PaymentDetails pd = new PaymentDetails
+                    {
+                        cardOwner = "Dwayne Mendez",
+                    };
+
+                    return View("PaymentDetails", pd);
                 }
             }
 
