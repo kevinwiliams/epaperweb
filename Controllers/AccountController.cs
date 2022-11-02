@@ -118,9 +118,9 @@ namespace ePaperWeb.Controllers
                     {
                         startDate = DateTime.Now,
                         endDate = DateTime.Now.AddDays(30),
-                        RatesList = db.printandsubrates
-                            .Where(x => x.Market == market)
-                            .Where(x => x.Active == 1).ToList(),
+                        //RatesList = db.printandsubrates
+                        //    .Where(x => x.Market == market)
+                        //    .Where(x => x.Active == 1).ToList(),
                     };
                     
 
@@ -130,6 +130,53 @@ namespace ePaperWeb.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult GetRatesList() {
+
+            return PartialView("_RatesFormPartial");
+        }
+
+        [HttpPost]
+        public ActionResult GetRatesList(string rateType) 
+        {
+            //rateType = (rateType != null) ? rateType : "Epaper";
+            PrintSubRates model = new PrintSubRates();
+            /*return View(model);*/
+
+            if (rateType != null)
+            {
+                    try
+                    {
+                    UserLocation objLoc = GetSubscriberLocation();
+                    var market = (objLoc.Country_Code == "JM") ? "Local" : "International";
+
+                    Entities db = new Entities();
+                    List<printandsubrate> ratesList = db.printandsubrates
+                                        .Where(x => x.Market == market)
+                                        .Where(x => x.Active == 1).ToList();
+
+
+                    var nratesList = (rateType != null) ?  ratesList.Where(x => x.Type == rateType).ToList() : ratesList;
+
+                    //PrintSubRates model = new PrintSubRates
+                    //    {
+                    //        Rates = nratesList,
+                    //        RateType = rateType
+                    //    };
+                    model.Rates = nratesList;
+                    model.RateType = rateType;
+
+                    return PartialView("_RatesPartial", model);
+                }
+                catch (Exception e)
+                {
+                    //handle exception
+                        throw e;
+                }
+            }
+
+            return PartialView("_RatesPartial", model);
+        }
 
         [HttpPost]
         public ActionResult SubscriptionInfo(SubscriptionDetails data, string prevBtn, string nextBtn)
@@ -169,7 +216,7 @@ namespace ePaperWeb.Controllers
                     if (selectedPlan.Type == "Print")
                     {
                         objPr.startDate = data.startDate;
-                        objPr.endDate = data.startDate.AddDays(30);
+                        objPr.endDate = data.startDate.AddDays((double)selectedPlan.PrintTerm * 7);
                         objPr.rateID = data.rateID;
                         objPr.isActive = true;
                         objPr.emailAddress = objSub.emailAddress;
@@ -201,7 +248,7 @@ namespace ePaperWeb.Controllers
 
                         //Epaper subscription
                         objEp.startDate = data.startDate;
-                        objEp.endDate = data.startDate.AddDays((double)selectedPlan.ETerm);
+                        objEp.endDate = data.startDate.AddDays((double)selectedPlan.PrintTerm * 7);
                         objEp.rateID = data.rateID;
                         objEp.subType = data.subType;
                         objEp.isActive = true;

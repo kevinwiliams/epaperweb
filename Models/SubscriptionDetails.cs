@@ -10,6 +10,7 @@ namespace ePaperWeb.Models
     public class SubscriptionDetails
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please select a plan to proceed")]
+        [Key]
         public int rateID { get; set; }
         public string subType { get; set; }
 

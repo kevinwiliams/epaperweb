@@ -1,6 +1,7 @@
 ﻿using ePaperWeb.DBModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,8 +9,10 @@ namespace ePaperWeb.Models
 {
     public class PrintSubRates
     {
-        public List<printandsubrate> RatesList { get; set; }
-        public string rateDescr { get; set; }
-        public int rateID { get; set; }
+        [Key]
+        public int RateID { get; set; }
+
+        public string RateType { get; set; }
+        public IEnumerable<printandsubrate> Rates { get; set; }
     }
 }
