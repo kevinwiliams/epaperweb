@@ -14,7 +14,8 @@ namespace ePaperWeb
 
             bundles.Add(new Bundle("~/bundles/jqueryval").Include(
                       "~/Scripts/jquery.validate.min.js",
-                      "~/Scripts/jquery.validate.unobtrusive.min.js"));
+                      "~/Scripts/jquery.validate.unobtrusive.min.js",
+                      "~/Scripts/jquery.unobtrusive-ajax.min.js")); //
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.

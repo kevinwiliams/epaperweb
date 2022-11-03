@@ -45,6 +45,7 @@
           <Property Name="token" Type="varchar" MaxLength="50" />
           <Property Name="ccHashID" Type="int" />
           <Property Name="lastLogin" Type="datetime" />
+          <Property Name="roleID" Type="int" />
         </EntityType>
         <EntityType Name="subscriber_address">
           <Key>
@@ -92,6 +93,14 @@
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="deliveryInstructions" Type="varchar" MaxLength="200" />
           <Property Name="circprosubid" Type="varchar" MaxLength="50" />
+          <Property Name="createdAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="subscriber_roles">
+          <Key>
+            <PropertyRef Name="roleID" />
+          </Key>
+          <Property Name="roleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="roleDescription" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="createdAt" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="subscriber_tranx">
@@ -149,6 +158,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="roles">
+          <End Role="subscriber_roles" Type="Self.subscriber_roles" Multiplicity="0..1" />
+          <End Role="subscriber" Type="Self.subscriber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber_roles">
+              <PropertyRef Name="roleID" />
+            </Principal>
+            <Dependent Role="subscriber">
+              <PropertyRef Name="roleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="tranx">
           <End Role="subscriber" Type="Self.subscriber" Multiplicity="0..1" />
           <End Role="subscriber_tranx" Type="Self.subscriber_tranx" Multiplicity="*" />
@@ -167,6 +188,7 @@
           <EntitySet Name="subscriber_address" EntityType="Self.subscriber_address" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="subscriber_epaper" EntityType="Self.subscriber_epaper" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="subscriber_print" EntityType="Self.subscriber_print" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subscriber_roles" EntityType="Self.subscriber_roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="subscriber_tranx" EntityType="Self.subscriber_tranx" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="address" Association="Self.address">
             <End Role="subscriber_address" EntitySet="subscriber_address" />
@@ -179,6 +201,10 @@
           <AssociationSet Name="print" Association="Self.print">
             <End Role="subscriber" EntitySet="subscriber" />
             <End Role="subscriber_print" EntitySet="subscriber_print" />
+          </AssociationSet>
+          <AssociationSet Name="roles" Association="Self.roles">
+            <End Role="subscriber_roles" EntitySet="subscriber_roles" />
+            <End Role="subscriber" EntitySet="subscriber" />
           </AssociationSet>
           <AssociationSet Name="tranx" Association="Self.tranx">
             <End Role="subscriber" EntitySet="subscriber" />
@@ -211,6 +237,11 @@
           <AssociationSet Name="tranx" Association="DBModel.tranx">
             <End Role="subscriber" EntitySet="subscribers" />
             <End Role="subscriber_tranx" EntitySet="subscriber_tranx" />
+          </AssociationSet>
+          <EntitySet Name="subscriber_roles" EntityType="DBModel.subscriber_roles" />
+          <AssociationSet Name="roles" Association="DBModel.roles">
+            <End Role="subscriber_roles" EntitySet="subscriber_roles" />
+            <End Role="subscriber" EntitySet="subscribers" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="printandsubrate">
@@ -257,6 +288,8 @@
           <NavigationProperty Name="subscriber_print" Relationship="DBModel.print" FromRole="subscriber" ToRole="subscriber_print" />
           <NavigationProperty Name="subscriber_tranx" Relationship="DBModel.tranx" FromRole="subscriber" ToRole="subscriber_tranx" />
           <Property Name="lastLogin" Type="DateTime" Precision="3" />
+          <Property Name="roleID" Type="Int32" />
+          <NavigationProperty Name="subscriber_roles" Relationship="DBModel.roles" FromRole="subscriber" ToRole="subscriber_roles" />
         </EntityType>
         <EntityType Name="subscriber_address">
           <Key>
@@ -377,6 +410,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="subscriber_roles">
+          <Key>
+            <PropertyRef Name="roleID" />
+          </Key>
+          <Property Name="roleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roleDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="subscribers" Relationship="DBModel.roles" FromRole="subscriber_roles" ToRole="subscriber" />
+        </EntityType>
+        <Association Name="roles">
+          <End Type="DBModel.subscriber_roles" Role="subscriber_roles" Multiplicity="0..1" />
+          <End Type="DBModel.subscriber" Role="subscriber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriber_roles">
+              <PropertyRef Name="roleID" />
+            </Principal>
+            <Dependent Role="subscriber">
+              <PropertyRef Name="roleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -406,6 +460,7 @@
           <EntitySetMapping Name="subscribers">
             <EntityTypeMapping TypeName="DBModel.subscriber">
               <MappingFragment StoreEntitySet="subscriber">
+                <ScalarProperty Name="roleID" ColumnName="roleID" />
                 <ScalarProperty Name="lastLogin" ColumnName="lastLogin" />
                 <ScalarProperty Name="ccHashID" ColumnName="ccHashID" />
                 <ScalarProperty Name="token" ColumnName="token" />
@@ -494,6 +549,15 @@
                 <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
                 <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
                 <ScalarProperty Name="tranxID" ColumnName="tranxID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriber_roles">
+            <EntityTypeMapping TypeName="DBModel.subscriber_roles">
+              <MappingFragment StoreEntitySet="subscriber_roles">
+                <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+                <ScalarProperty Name="roleDescription" ColumnName="roleDescription" />
+                <ScalarProperty Name="roleID" ColumnName="roleID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

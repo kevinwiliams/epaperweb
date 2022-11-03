@@ -46,9 +46,8 @@
 
                             <div id="search-form">
                                 @Html.Partial("_RatesFormPartial")
-                                @Html.Action("GetRatesList", "Account")
+                               @* @Html.Action("GetRatesList", "Account")*@
                             </div>
-                            @Html.HiddenFor(model => model.rateID)
                             <div class="container pb-3" id="rates-results"></div>
 
                             <script>

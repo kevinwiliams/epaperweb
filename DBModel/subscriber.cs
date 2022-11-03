@@ -39,6 +39,7 @@ namespace ePaperWeb.DBModel
         public string token { get; set; }
         public Nullable<int> ccHashID { get; set; }
         public Nullable<System.DateTime> lastLogin { get; set; }
+        public Nullable<int> roleID { get; set; }
     
         public virtual subscriber_address subscriber_address { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -47,5 +48,6 @@ namespace ePaperWeb.DBModel
         public virtual ICollection<subscriber_print> subscriber_print { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<subscriber_tranx> subscriber_tranx { get; set; }
+        public virtual subscriber_roles subscriber_roles { get; set; }
     }
 }

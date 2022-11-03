@@ -31,9 +31,6 @@ namespace ePaperWeb.DBModel
         public virtual DbSet<subscriber_epaper> subscriber_epaper { get; set; }
         public virtual DbSet<subscriber_print> subscriber_print { get; set; }
         public virtual DbSet<subscriber_tranx> subscriber_tranx { get; set; }
-
-        public System.Data.Entity.DbSet<ePaperWeb.Models.SubscriptionDetails> SubscriptionDetails { get; set; }
-
-        public System.Data.Entity.DbSet<ePaperWeb.Models.PrintSubRates> PrintSubRates { get; set; }
+        public virtual DbSet<subscriber_roles> subscriber_roles { get; set; }
     }
 }
