@@ -449,6 +449,9 @@
     <Content Include="Views\Account\_SubscriptionInfo.cshtml" />
     <Content Include="Views\Account\_RatesPartial.cshtml" />
     <Content Include="Views\Account\_RatesFormPartial.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

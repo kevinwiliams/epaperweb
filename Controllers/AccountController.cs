@@ -10,12 +10,65 @@ using System.Globalization;
 
 namespace ePaperWeb.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : Controller 
     {
         // GET: Account
         public ActionResult Index()
         {
             return View("LoginDetails");
+        }
+
+        public ActionResult Dashboard() 
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(Session["userid"].ToString())) 
+                {
+                    return RedirectToActionPermanent("Login", "Account");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                //throw ex;
+                return RedirectToActionPermanent("Login", "Account", ex);
+            }
+
+            return View();
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(LoginDetails user) 
+        {
+            using (Entities db = new Entities())
+            {
+                var passwordHash = PasswordHash(user.Password);
+                var result = db.subscribers
+                    .Where(x => x.emailAddress == user.EmailAddress && x.passwordHash == passwordHash);
+
+                if (result.Count() != 0) {
+
+                    Session["userid"] = user.EmailAddress;
+                    return RedirectToAction("Dashboard", "Account");
+                }
+                else
+                {
+                    TempData["msg"] = "Incorrect email address/password";
+                }
+            }
+            
+            return View();
+        }
+
+        public ActionResult Logout() 
+        {
+            Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]
