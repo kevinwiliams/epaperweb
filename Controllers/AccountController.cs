@@ -37,6 +37,14 @@ namespace ePaperWeb.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult ReadPaper()
+        {
+            string token = Session["tokenHash"].ToString();
+            string pressReaderURL = "https://jamaicaobserver.pressreader.com/?token=";
+            
+            return Redirect(pressReaderURL + token);
+        }
         public ActionResult Login()
         {
             return View();
@@ -49,15 +57,22 @@ namespace ePaperWeb.Controllers
             {
                 var passwordHash = PasswordHash(user.Password);
                 var result = db.subscribers
-                    .Where(x => x.emailAddress == user.EmailAddress && x.passwordHash == passwordHash);
+                    .Where(x => x.emailAddress == user.EmailAddress && x.passwordHash == passwordHash).FirstOrDefault();
 
-                if (result.Count() != 0) {
+                if (result != null) {
 
-                    var role = db.subscriber_roles.Where(x => x.roleID == result.FirstOrDefault().roleID).FirstOrDefault();
+                    //update token in subscribers table
+                    var token = Guid.NewGuid().ToString();
+                    result.token = token;
+                    db.SaveChanges();
+
+                    var role = db.subscriber_roles.Where(x => x.roleID == result.roleID).FirstOrDefault();
 
                     if(role.roleDescription == "User") //Admin | User | Staff
                     {
                         Session["userid"] = user.EmailAddress;
+                        Session["name"] = result.firstName;
+                        Session["tokenHash"] = token;
                         return RedirectToAction("Dashboard", "Account");
                     }
                     
