@@ -53,8 +53,14 @@ namespace ePaperWeb.Controllers
 
                 if (result.Count() != 0) {
 
-                    Session["userid"] = user.EmailAddress;
-                    return RedirectToAction("Dashboard", "Account");
+                    var role = db.subscriber_roles.Where(x => x.roleID == result.FirstOrDefault().roleID).FirstOrDefault();
+
+                    if(role.roleDescription == "User") //Admin | User | Staff
+                    {
+                        Session["userid"] = user.EmailAddress;
+                        return RedirectToAction("Dashboard", "Account");
+                    }
+                    
                 }
                 else
                 {
