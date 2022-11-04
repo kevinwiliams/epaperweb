@@ -64,6 +64,7 @@ namespace ePaperWeb.Controllers
                     //update token in subscribers table
                     var token = Guid.NewGuid().ToString();
                     result.token = token;
+                    result.lastLogin = DateTime.Now;
                     db.SaveChanges();
 
                     var role = db.subscriber_roles.Where(x => x.roleID == result.roleID).FirstOrDefault();
