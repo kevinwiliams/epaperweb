@@ -608,6 +608,15 @@ namespace ePaperWeb.Controllers
             return (subscriber_address)Session["subscriber_address"];
         }
 
+        private subscriber_address GetSubscriberDeliveryAddress()
+        {
+            if (Session["subscriber_del_address"] == null)
+            {
+                Session["subscriber_del_address"] = new subscriber_address();
+            }
+            return (subscriber_address)Session["subscriber_del_address"];
+        }
+
         private subscriber_epaper GetEpaperDetails()
         {
             if (Session["subscriber_epaper"] == null)

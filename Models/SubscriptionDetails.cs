@@ -21,7 +21,7 @@ namespace ePaperWeb.Models
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
 
-        [Display(Name = "Promotions and newsletters")]
+        [Display(Name = "Email address for promotions and updates")]
         public string notificationEmail { get; set; }
 
         [Display(Name = "Special delivery instructions")]
@@ -38,6 +38,11 @@ namespace ePaperWeb.Models
         public bool termsAndCon { get; set; }
 
         public IEnumerable<printandsubrate> RatesList { get; set; }
+
+        [Display(Name = "Same as mailing address?")]
+        public bool sameAsMailing { get; set; }
+
+        public AddressDetails deliveryAddress { get; set; }
 
     }
 
