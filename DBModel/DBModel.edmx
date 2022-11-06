@@ -42,10 +42,10 @@
           <Property Name="phoneNumber" Type="varchar" MaxLength="50" />
           <Property Name="newsletter" Type="bit" />
           <Property Name="createdAt" Type="datetime" Nullable="false" />
+          <Property Name="roleID" Type="int" />
           <Property Name="token" Type="varchar" MaxLength="50" />
           <Property Name="ccHashID" Type="int" />
           <Property Name="lastLogin" Type="datetime" />
-          <Property Name="roleID" Type="int" />
         </EntityType>
         <EntityType Name="subscriber_address">
           <Key>
@@ -55,13 +55,14 @@
           <Property Name="subscriberID" Type="int" />
           <Property Name="addressType" Type="varchar" MaxLength="2" />
           <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="addressLine1" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="addressLine2" Type="varchar" MaxLength="50" />
+          <Property Name="addressLine1" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="addressLine2" Type="varchar" MaxLength="100" />
           <Property Name="cityTown" Type="varchar" MaxLength="50" />
           <Property Name="stateParish" Type="varchar" MaxLength="50" />
           <Property Name="zipCode" Type="varchar" MaxLength="15" />
           <Property Name="country" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="createdAt" Type="datetime" Nullable="false" />
+          <Property Name="lastLogin" Type="datetime" />
         </EntityType>
         <EntityType Name="subscriber_epaper">
           <Key>
@@ -70,7 +71,6 @@
           <Property Name="epaperID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="subscriberID" Type="int" Nullable="false" />
           <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="token" Type="varchar" MaxLength="50" />
           <Property Name="rateID" Type="int" Nullable="false" />
           <Property Name="startDate" Type="datetime" Nullable="false" />
           <Property Name="endDate" Type="datetime" Nullable="false" />
@@ -299,14 +299,15 @@
           <Property Name="subscriberID" Type="Int32" />
           <Property Name="addressType" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="emailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="addressLine1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="addressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="addressLine1" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="addressLine2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="cityTown" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="stateParish" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="zipCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="country" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="subscribers" Relationship="DBModel.address" FromRole="subscriber_address" ToRole="subscriber" />
+          <Property Name="lastLogin" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="subscriber_epaper">
           <Key>
@@ -315,7 +316,6 @@
           <Property Name="epaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="subscriberID" Type="Int32" Nullable="false" />
           <Property Name="emailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="rateID" Type="Int32" Nullable="false" />
           <Property Name="startDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="endDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -484,6 +484,7 @@
           <EntitySetMapping Name="subscriber_address">
             <EntityTypeMapping TypeName="DBModel.subscriber_address">
               <MappingFragment StoreEntitySet="subscriber_address">
+                <ScalarProperty Name="lastLogin" ColumnName="lastLogin" />
                 <ScalarProperty Name="createdAt" ColumnName="createdAt" />
                 <ScalarProperty Name="country" ColumnName="country" />
                 <ScalarProperty Name="zipCode" ColumnName="zipCode" />
@@ -508,7 +509,6 @@
                 <ScalarProperty Name="endDate" ColumnName="endDate" />
                 <ScalarProperty Name="startDate" ColumnName="startDate" />
                 <ScalarProperty Name="rateID" ColumnName="rateID" />
-                <ScalarProperty Name="token" ColumnName="token" />
                 <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
                 <ScalarProperty Name="subscriberID" ColumnName="subscriberID" />
                 <ScalarProperty Name="epaperID" ColumnName="epaperID" />

@@ -25,11 +25,15 @@ namespace ePaperWeb
             public static string Serialize(T obj)
             {
                 XmlSerializer xsSubmit = new XmlSerializer(typeof(T));
+                //remove generated namespaces
+                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                ns.Add("", "");
+
                 using (var sww = new StringWriter())
                 {
                     using (XmlTextWriter writer = new XmlTextWriter(sww) { Formatting = Formatting.Indented })
                     {
-                        xsSubmit.Serialize(writer, obj);
+                        xsSubmit.Serialize(writer, obj, ns);
                         return sww.ToString();
                     }
                 }

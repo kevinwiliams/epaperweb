@@ -38,12 +38,13 @@
                     @{
                         try
                         {
-                            if (Session["userid"] != null)
+                            //if (!String.IsNullOrEmpty(@HttpContext.Current.User.Identity.Name))
+                            if (Request.IsAuthenticated)
                             {
                                 <li class="dropdown">
                                     <a href="#"><span>My Account</span> <i class="bi bi-chevron-down"></i></a>
                                     <ul>
-                                        <li>@Html.ActionLink(Session["userid"].ToString(), "Dashboard", new { controller = "Account" }, new { area = "" })</li>
+                                        <li>@Html.ActionLink(User.Identity.Name, "Dashboard", new { controller = "Account" }, new { area = "" })</li>
                                         <li><a class="nav-link scrollto" href="#team">Change Password</a></li>
                                         <li><a class="nav-link scrollto" href="#team">Update Profile</a></li>
                                         <li><a class="nav-link scrollto" href="#testimonials">Request Refund</a></li>
@@ -65,7 +66,7 @@
             @{
                 try
                 {
-                    if (Session["userid"] == null)
+                    if (!Request.IsAuthenticated)
                     {
                         <div class="d-flex m-3 text-center">
                             <a href="#" class="btn-sign-in" data-bs-toggle="modal" data-bs-target="#login-modal">Sign In</a>
@@ -87,42 +88,9 @@
 
     @RenderBody()
 
-    @model ePaperWeb.Models.LoginDetails
-    <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content loginmodal-container">
-                <h1>Login to Your Account</h1><br>
-            <form action="@Url.Action("Login","Account")" method="post" name="Login">
-               
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-                    <div class="form-group">
-                        <div class="col-md-12 p-3">
-                            @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", placeholder = @Html.DisplayNameFor(m => m.EmailAddress) } })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-12 p-3">
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = @Html.DisplayNameFor(m => m.Password) } })
-                        </div>
-                    </div>
-
-                    
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-12">
-                            <input type="submit" name="login" class="login loginmodal-submit" value="Login">
-                        </div>
-                    </div>
-                </div>
-            </form>
-                <div class="login-help">
-                    <a href="#">Forgot Password?</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Login Modal -->
+    @{Html.RenderAction("LoginModal", "Account");}
+    <!-- end: Login Modal -->
 
 
     <!-- ======= Footer ======= -->

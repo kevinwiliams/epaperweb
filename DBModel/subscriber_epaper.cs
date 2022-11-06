@@ -17,7 +17,6 @@ namespace ePaperWeb.DBModel
         public int epaperID { get; set; }
         public int subscriberID { get; set; }
         public string emailAddress { get; set; }
-        public string token { get; set; }
         public int rateID { get; set; }
         public System.DateTime startDate { get; set; }
         public System.DateTime endDate { get; set; }

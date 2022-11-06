@@ -7,6 +7,7 @@ using ePaperWeb.Models;
 using ePaperWeb.DBModel;
 using static ePaperWeb.Util;
 using System.Globalization;
+using System.Web.Security;
 
 namespace ePaperWeb.Controllers
 {
@@ -17,27 +18,15 @@ namespace ePaperWeb.Controllers
         {
             return View("LoginDetails");
         }
-
+        
+        [Authorize]
         public ActionResult Dashboard() 
         {
-            try
-            {
-                if (String.IsNullOrEmpty(Session["userid"].ToString())) 
-                {
-                    return RedirectToActionPermanent("Login", "Account");
-                }
-            }
-            catch (Exception ex)
-            {
-
-                //throw ex;
-                return RedirectToActionPermanent("Login", "Account", ex);
-            }
-
             return View();
         }
 
-        [HttpGet]
+
+        [HttpGet] 
         public ActionResult ReadPaper()
         {
             string token = Session["tokenHash"].ToString();
@@ -50,8 +39,14 @@ namespace ePaperWeb.Controllers
             return View();
         }
 
+        public ActionResult LoginModal()
+        {
+            return PartialView("_loginPartial");
+        }
+
         [HttpPost]
-        public ActionResult Login(LoginDetails user) 
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(UserLogin user, string ReturnUrl = "") 
         {
             using (Entities db = new Entities())
             {
@@ -71,25 +66,48 @@ namespace ePaperWeb.Controllers
 
                     if(role.roleDescription == "User") //Admin | User | Staff
                     {
-                        Session["userid"] = user.EmailAddress;
+                        //TODO: Use ViewBag/ViewData
+                        //Session["userid"] = user.EmailAddress;
                         Session["name"] = result.firstName;
                         Session["tokenHash"] = token;
-                        return RedirectToAction("Dashboard", "Account");
+
+                        //int timeout = login.RememberMe ? 525600 : 20; // 525600 min = 1 year
+                        int timeout =  20; // 525600 min = 1 year
+                        var ticket = new FormsAuthenticationTicket(user.EmailAddress, false, timeout);
+                        string encrypted = FormsAuthentication.Encrypt(ticket);
+                        var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                        cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                        cookie.HttpOnly = false;
+                        Response.Cookies.Add(cookie);
+
+                        if (Url.IsLocalUrl(ReturnUrl))
+                        {
+                            return Redirect(ReturnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Dashboard", "Account");
+                        }
+                        
                     }
                     
                 }
                 else
                 {
                     TempData["msg"] = "Incorrect email address/password";
+                    ModelState.AddModelError("", "Incorrect email address/password");
                 }
             }
             
             return View();
         }
 
+
+        [Authorize]
         public ActionResult Logout() 
         {
             Session.Clear();
+            FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -107,6 +125,7 @@ namespace ePaperWeb.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult LoginDetails(LoginDetails data, string prevBtn, string nextBtn)
         {
            if (nextBtn != null)
@@ -156,6 +175,7 @@ namespace ePaperWeb.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddressDetails(AddressDetails data, string prevBtn, string nextBtn)
         {
             
@@ -228,6 +248,7 @@ namespace ePaperWeb.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult GetRatesList() {
 
@@ -384,25 +405,13 @@ namespace ePaperWeb.Controllers
                     
                 }
             }
-
-            UserLocation objLoc = GetSubscriberLocation();
-            var market = (objLoc.Country_Code == "JM") ? "Local" : "International";
-            
-            SubscriptionDetails subscriptionDetails = new SubscriptionDetails 
-            {
-                startDate = DateTime.Now,
-                RatesList = db.printandsubrates
-                                .Where(x => x.Market == market)
-                                .Where(x => x.Active == 1).ToList(),
-
-            };
-            
-
-            return View(subscriptionDetails);
+           
+            return View();
         }
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult PaymentDetails(PaymentDetails data, string prevBtn, string nextBtn)
         {
 
@@ -554,6 +563,7 @@ namespace ePaperWeb.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult PaymentSuccess()
         {
             return View();

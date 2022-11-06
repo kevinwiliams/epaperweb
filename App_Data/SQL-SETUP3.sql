@@ -8,6 +8,29 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+
+CREATE TABLE [dbo].[subscriber_roles](
+	[roleID] [int] IDENTITY(9001,1) NOT NULL,
+	[roleDescription] [varchar](50) NOT NULL,
+	[createdAt] [datetime] NOT NULL,
+ CONSTRAINT [PK_subscriber_roles] PRIMARY KEY CLUSTERED 
+(
+	[roleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+INSERT INTO [dbo].[subscriber_roles]
+           ([roleDescription]
+           ,[createdAt])
+     VALUES
+            ('Admin', GETDATE())
+           ,('User', GETDATE())
+           ,('Staff', GETDATE())
+GO
+
+
 CREATE TABLE [dbo].[subscriber](
 	[subscriberID] [int] IDENTITY(1,1) NOT NULL,
 	[emailAddress] [varchar](50) NOT NULL,
@@ -23,6 +46,7 @@ CREATE TABLE [dbo].[subscriber](
 	[phoneNumber] [varchar](50) NULL,
 	[newsletter] [bit] NULL,
 	[createdAt] [datetime] NOT NULL,
+	[roleID] [int] NULL,
 	[token] [varchar](50) NULL,
 	[ccHashID] [int] NULL,
 	[lastLogin] [datetime] NULL,
@@ -45,8 +69,8 @@ CREATE TABLE [dbo].[subscriber_address](
 	[subscriberID] [int],
 	[addressType] [varchar](2) NULL,
 	[emailAddress] [varchar](50) NOT NULL,
-	[addressLine1] [varchar](50) NOT NULL,
-	[addressLine2] [varchar](50) NULL,
+	[addressLine1] [varchar](100) NOT NULL,
+	[addressLine2] [varchar](100) NULL,
 	[cityTown] [varchar](50) NULL,
 	[stateParish] [varchar](50) NULL,
 	[zipCode] [varchar](15) NULL,
@@ -147,6 +171,13 @@ REFERENCES [dbo].[subscriber_address] ([addressID])
 GO
 
 ALTER TABLE [dbo].[subscriber] CHECK CONSTRAINT [address]
+GO
+
+ALTER TABLE [dbo].[subscriber]  WITH NOCHECK ADD  CONSTRAINT [roles] FOREIGN KEY([roleID])
+REFERENCES [dbo].[subscriber_roles] ([roleID])
+GO
+
+ALTER TABLE [dbo].[subscriber] CHECK CONSTRAINT [roles]
 GO
 
 ALTER TABLE [dbo].[subscriber_epaper]  WITH NOCHECK ADD  CONSTRAINT [epaper] FOREIGN KEY([subscriberID])

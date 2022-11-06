@@ -83,7 +83,17 @@ namespace ePaperWeb.Controllers
                         }
 
                         //load object with database results
-                        xml = (result != null) ? MemberXML(mb, result) : ErrorXML(errCode, errMsg);
+                        if (result != null)
+                        {
+                            //get active subscription
+                            if (result.subscriber_epaper != null)
+                            {
+                                if (result.subscriber_epaper.FirstOrDefault(x => x.isActive == true) != null)
+                                    xml = MemberXML(mb, result);
+                                else
+                                    xml = ErrorXML(errCode, errMsg);
+                            }
+                        }
 
                         return new HttpResponseMessage()
                         {
@@ -104,14 +114,23 @@ namespace ePaperWeb.Controllers
             }
 
         }
+
         [NonAction]
         public string MemberXML(member mb, subscriber result)
         {
             var xml = "";
             try
             {
-                //load object with database results
-                if (result != null)
+           
+                DateTime today = DateTime.Now;
+                DateTime endDate = result.subscriber_epaper.FirstOrDefault(x => x.isActive == true).endDate;
+
+                TimeSpan t = endDate - today;
+                double daysLeft = t.TotalDays;
+                var subscriptionCode = WebConfigurationManager.AppSettings["SubcriptionCode"];
+
+                //set subscription code is epaper valid
+                if (daysLeft > 1)
                 {
                     mb.userID = result.subscriberID;
                     mb.email = result.emailAddress;
@@ -130,29 +149,16 @@ namespace ePaperWeb.Controllers
                     mb.country = result.subscriber_address.country;
                     mb.gender = String.Empty;
                     mb.nickname = String.Empty;
-
-
-                    DateTime today = DateTime.Now;
-                    DateTime endDate = result.subscriber_epaper.FirstOrDefault(x => x.isActive == true).endDate;
-
-                    TimeSpan t =  endDate - today;
-                    double daysLeft = t.TotalDays;
-                    var subscriptionCode = "";
-
-                    //set subscription code is epaper valid
-                    if (daysLeft > 1)
-                        subscriptionCode = WebConfigurationManager.AppSettings["SubcriptionCode"];
-
                     mb.subscription = subscriptionCode;
                     //change date format to YYYY-MM-DD
                     var dateTime = result.subscriber_epaper.FirstOrDefault(x => x.isActive == true).endDate.ToString();
-                    DateTime dt = DateTime.ParseExact(dateTime, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                    DateTime dt = DateTime.ParseExact(dateTime, "d/M/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
                     mb.expiration = dt.ToString("yyyy-MM-dd");
-
-
-                    //serialize class to xml string using helper
-                    xml = ObjectSerializer<member>.Serialize(mb);
                 }
+                        
+                //serialize class to xml string using helper
+                xml = ObjectSerializer<member>.Serialize(mb);
+                
             }
             catch (Exception ex)
             {
